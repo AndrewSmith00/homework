@@ -1,20 +1,21 @@
 #include <iostream>
 #include <stdio.h>
-const int len = 5;
+const int len = 8;
 #pragma warning(disable : 4996)
 
 int main()
 {
-    int range;
+    int range;      //Переменная, определяющая расстояние сдвига значений в массиве
 
     printf("Array length is %d ", len);
     printf("\nChoose the range: ");
     scanf("%d", &range);
-    if (range >= 5)
+
+    if (range >= 5)                         
         printf("Error: range is bigger or equal to array lenght");
 
-    int myArray[len];
-    int result[len];
+    int myArray[len];       //Входные данные
+    int result[len];        //Массив, в который записывается результат
 
     printf("\nEnter array values \n");
     for (int i = 0; i < len; i++)
@@ -24,17 +25,17 @@ int main()
 
 
 
-    for (int j = 0; j <= len -1; j++)
+    for (int j = 0; j < len; j++)       //Запись чисел из myArray в result с учётом сдвига
     {
         if (j + range > len - 1)
         {
-            result[j] = myArray[len -1 - j];
+            result[j] = myArray[range - (len  - j)];
             continue;
         }
         result[j] = myArray[j + range];
     }
 
-    for (int i = 0; i < len; i++)
+    for (int i = 0; i < len; i++)       //Вывод result
     {
         printf("%d", result[i]);
     }
