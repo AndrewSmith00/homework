@@ -1,0 +1,27 @@
+#include <iostream>
+#include <stdio.h>
+
+
+int main()		//Проверка на палиндром
+{
+	int num;
+	
+	printf("Enter a number\n");
+	scanf_s("%d", &num);
+
+	int number = num;
+	int backwardNumber = 0;
+	int ost = 0;
+
+	while (number > 0)
+	{
+		ost = number % 10;
+		backwardNumber = backwardNumber * 10 + ost;
+		number /= 10;
+	}
+	if (num == backwardNumber)
+		printf("Number is a palindrome\n");
+	else
+		printf("Number is not a palindrome\n");
+	return 0;
+}
