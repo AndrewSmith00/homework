@@ -1,0 +1,44 @@
+#include <iostream>
+#include <stdio.h>
+
+
+int main()		
+{
+	int a[5];
+	bool flag = true;
+	bool isPositive = 1;
+	bool nextIsPositive = 1;
+
+	
+	printf("Enter an array\n");
+	for (size_t i = 0; i < 5; i++)
+	{
+		scanf_s("%d", &a[i]);
+	}
+	
+	if (a[0] < 0)
+	{
+		isPositive = false;
+	}
+
+	for (int i = 1; i < 5; i++)
+	{
+		bool nextIsPositive = true;
+		if (a[i] < 0)
+		{
+			nextIsPositive = 0;
+		}
+		if (nextIsPositive == isPositive)
+		{
+			flag = false;
+			break;
+		}
+		isPositive = nextIsPositive;
+	}
+
+	if (flag)
+		printf("Subsequence is sign alternating");
+	else
+		printf("Subsequence is not sign alternating");
+	
+}
