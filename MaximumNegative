@@ -1,0 +1,38 @@
+#include <iostream>
+#include <stdio.h>
+
+int const len = 5;
+
+int main()		
+{
+	int a[5];
+	int max = 0;
+	bool flag = 0;
+
+	printf("Enter an array\n");
+	for (int i = 0; i < len; i++)
+	{
+		scanf_s("%d", &a[i]);
+	}
+
+	for (int i = 0; i < len; i++)
+	{
+		if (a[i] < 0)
+		{
+			max = a[i];
+			flag = true;
+			break;
+		}
+	}
+
+	for (int i = 0; i < len; i++)
+	{
+		if ( (a[i] < 0) && (a[i] > max))
+			max = a[i];
+	}
+
+	if (flag)
+		printf("Maximum negative number is: %d", max);
+	else
+		printf("There is no negative numbers in array");
+}
