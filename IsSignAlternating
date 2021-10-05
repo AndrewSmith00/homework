@@ -4,36 +4,47 @@
 
 int main()		
 {
-	int a[5];
+	int currentValue;
+	int nextValue;
+	bool isPositive = true;
+	bool nextIsPositive;
+	int count = 0;
+	int amount;
 	bool flag = true;
-	bool isPositive = 1;
-	bool nextIsPositive = 1;
+
+	printf("Enter an amount of numbers\n");
+	scanf_s("%d", &amount);
+	
+	printf("Enter first number\n");
+	scanf_s("%d", &currentValue);
 
 	
-	printf("Enter an array\n");
-	for (size_t i = 0; i < 5; i++)
-	{
-		scanf_s("%d", &a[i]);
-	}
 	
-	if (a[0] < 0)
+	if (currentValue < 0)
 	{
 		isPositive = false;
 	}
 
-	for (int i = 1; i < 5; i++)
+	while (count < amount-1)
 	{
+		printf("Enter a number\n");
+		scanf_s("%d", &nextValue);
+
 		bool nextIsPositive = true;
-		if (a[i] < 0)
+
+		if (nextValue < 0)
 		{
 			nextIsPositive = 0;
 		}
+
 		if (nextIsPositive == isPositive)
 		{
 			flag = false;
 			break;
 		}
+
 		isPositive = nextIsPositive;
+		count++;
 	}
 
 	if (flag)
