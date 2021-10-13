@@ -1,0 +1,18 @@
+#include <iostream>
+#include <stdio.h>
+const int len = 5;
+#pragma warning(disable : 4996)
+
+int main()	
+{
+	int num, n, sum = 0, count = 0;
+	scanf("%d", &n);
+	num = n;
+	while (num > 0)
+	{
+		sum = sum + num % 10;
+		count++;
+		num /= 10;
+	}
+	printf("Sum = %d\nCount = %d", sum, count);
+}
