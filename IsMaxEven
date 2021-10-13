@@ -1,0 +1,28 @@
+#include <iostream>
+#include <stdio.h>
+const int len = 5;
+#pragma warning(disable : 4996)
+
+int main()	
+{
+	int amount, num = 0, max = 0;
+
+	printf("Enter an amount of subsequence\n");
+	scanf("%d", &amount);
+	
+	printf("Enter numbers of subsequence\n");
+	for (int i = 0; i < amount; i++)
+	{
+		scanf("%d", &num);
+		if (num > max)
+			max = num;
+	}
+	if (max%2 == 0)
+	{
+		printf("Max number is even");
+	}
+	else
+	{
+		printf("Max number is not even");
+	}
+}
