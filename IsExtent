@@ -1,0 +1,29 @@
+#include <iostream>
+#include <stdio.h>
+const int len = 5;
+#pragma warning(disable : 4996)
+
+int main()	
+{
+	int amount, num = 0, st = 1, flag = 0;
+
+	printf("Enter a number\n");
+	scanf("%d", &num);
+
+	while (st <= num)
+	{
+		if (num == st)
+		{
+			flag = 1;
+		}
+		st = st * 2;
+	}
+	if (flag == 1)
+	{
+		printf("True");
+	}
+	else
+	{
+		printf("False");
+	}
+}
