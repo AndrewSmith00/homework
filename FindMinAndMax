@@ -1,0 +1,30 @@
+#include <iostream>
+
+//Кузнецов Андрей, 15 группа
+//Поиск максимального и минимального элемента, 0 - указатель конца последовательности
+int main() 
+{
+    int n;
+    int number;
+    int i = 0;
+
+
+    printf("Enter numbers of subsequence: \n");
+    scanf_s("%d", &number);
+    int min = number;
+    int max = number;
+
+    
+    while (true)
+    {
+        scanf_s("%d", &number);
+        if (number == 0)
+            break;
+        if (number > max)
+            max = number;
+        else if (number < min)
+            min = number;
+        i++;
+    }
+    printf("%d %d", min, max);
+}
