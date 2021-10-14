@@ -3,41 +3,50 @@
 
 int const len = 5;
 
-int main()
+//Кузнецов Андрей, 15 группа
+//Поиск максимального отрицательного элемента в последовательности
+int main() 
 {
-	int a[5];
-	int max = 0;
-	bool flag = 0;
-	int ndx = 0;
+	
+	int max = 0, ndx = -1;
+	
+
+	int a[len];
 
 	printf("Enter an array\n");
+
 	for (int i = 0; i < len; i++)
 	{
 		scanf_s("%d", &a[i]);
 	}
 
+	//Поиск первого неотрицательного элемента массива и ввод max и ndx
 	for (int i = 0; i < len; i++)
 	{
 		if (a[i] < 0)
 		{
 			max = a[i];
-			flag = true;
+			ndx = i;
 			break;
 		}
 	}
 
-	for (int i = 0; i < len; i++)
+	if (ndx == -1)		//Если отрицательных элементов нет, то вывод соответствующего сообщения
 	{
-		if ((a[i] < 0) && (a[i] > max))
-		{
-			max = a[i];
-			ndx = i+1;
-		}
-			
+		printf("There is no negative numbers in array\n");
 	}
-
-	if (flag)
-		printf("Maximum negative number is: %d, index is: %d", max, ndx);
-	else
-		printf("There is no negative numbers in array");
+	else		//Если отрицательные есть, то поиск максимального и его индекса, начиная с индекса первого отрицательного числа
+	{
+		for (int i = ndx; i < len; i++)
+		{
+			if ((a[i] < 0) && (a[i] > max))
+			{
+				max = a[i];
+				ndx = i;
+			}
+		}
+		printf("Maximum negative number is: %d, index is: %d", max, ++ndx);
+	}
+	
+	return 0;
 }
