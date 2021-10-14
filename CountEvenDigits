@@ -1,0 +1,20 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+int main()
+{
+    int num = 0;
+    int count = 0;
+    printf("Enter a number: \n");
+    scanf_s("%d", &num);
+    int number = num;
+    while (number > 0)
+    {
+        if (number % 10 % 2 == 0)
+            count++;
+        number = number / 10;
+    }
+    printf("Amount of even digits is: %d", count);
+}
