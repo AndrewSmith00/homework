@@ -1,0 +1,91 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+int IsPowerOfTwo(int x);
+
+int IsOrdered(int* num1, int* num2, int n, int m);
+
+int IsAscending(int* num, int n/*, int ndx*/);
+
+int main()
+{
+	int firstLen, secondLen;
+
+	printf("Enter a length of first and second array\n");
+	scanf_s("%d %d", &firstLen, &secondLen);
+
+
+
+	int* firstArr = new int[firstLen];
+	int* secondArr = new int[secondLen];
+
+	printf("\nEnter an first array\n");
+	for (int i = 0; i < firstLen; i++)
+		scanf_s("%d", &firstArr[i]);
+
+	printf("\nEnter an second array\n");
+	for (int i = 0; i < secondLen; i++)
+		scanf_s("%d", &secondArr[i]);
+
+	if (IsOrdered(firstArr, secondArr, firstLen, secondLen) == 2)
+		printf("Two arrays are ordered");
+	else if (IsOrdered(firstArr, secondArr, firstLen, secondLen) == 1)
+		printf("One array is ordered");
+	else if (IsOrdered(firstArr, secondArr, firstLen, secondLen) == 0)
+		printf("Two arrays are not ordered");
+}
+
+int IsAscending(int* num, int n/*, int ndx*/)
+{
+	int isAscending = 0;
+
+	for (int i = 1; i < n; i++) //Определяет, возрастает последовательность или убывает, и запоминает индекс, с которого она начинает возрастать/убывать
+	{
+		if (num[i] > num[i - 1])
+		{
+			isAscending = 1;
+			break;
+		}
+		else if (num[i] < num[i - 1])
+		{
+			isAscending = -1;
+			break;
+		}
+	}
+
+	return isAscending;
+}
+
+
+int IsOrdered(int* num1, int*num2, int n, int m)
+{
+	int isOrdered = 1;
+	bool isFirstOrdered = true, isSecondOrdered = true;
+	int isFirstAscending, isSecondAscending;
+	
+	isFirstAscending = IsAscending(num1, n);
+	isSecondAscending = IsAscending(num2, n);
+	
+	for (int i = 0; i < n-1; i++)
+	{
+		if ((num1[i] > num1[i + 1]) && (isFirstAscending == 1))
+			isFirstOrdered = false;
+		else if ((num1[i] < num1[i + 1]) && (isFirstAscending == -1))
+			isFirstOrdered = false;
+	}
+	for (int i = 0; i < m - 1; i++)
+	{
+		if ((num2[i] > num2[i + 1]) && (isSecondAscending == 1))
+			isSecondOrdered = false;
+		else if ((num2[i] < num2[i + 1]) && (isSecondAscending == -1))
+			isSecondOrdered = false;
+	}
+
+	if (isFirstOrdered && isSecondOrdered)
+		isOrdered = 2;
+	else if (!isFirstOrdered && !isSecondOrdered)
+		isOrdered = 0;
+	return isOrdered;
+}
