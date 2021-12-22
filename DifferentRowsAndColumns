@@ -1,4 +1,27 @@
-bool RowIsDifferent(float* row, int m)
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+//Кузнецов Андрей
+//Количество строк и столбцов матрицы, в которых элементы попарно различны
+
+int** CreateMatrix(int n, int m);
+int** FillMatrix(int n, int m);
+int DifferentRowsAndColumn(int** matr, int n, int m);
+bool RowIsDifferent(int* row, int m);
+bool ColumnIsDifferent(int** matr, int column, int n);
+
+int main()
+{
+	int n = 2, m = 2, res;
+
+	int** arr = FillMatrix(n, m);
+
+	printf("\n%d", DifferentRowsAndColumn(arr, n, m));
+}
+
+bool RowIsDifferent(int* row, int m)
 {
 	bool isDifferent = true;
 	for (int i = 0; i < m - 1; i++)
@@ -14,7 +37,7 @@ bool RowIsDifferent(float* row, int m)
 	return isDifferent;
 }
 
-bool ColumnIsDifferent(float** matr, int column, int n)
+bool ColumnIsDifferent(int** matr, int column, int n)
 {
 	bool isDifferent = true;
 	for (int i = 0; i < n - 1; i++)
@@ -30,7 +53,7 @@ bool ColumnIsDifferent(float** matr, int column, int n)
 	return isDifferent;
 }
 
-int DifferentRowsAndColumn(float** matr, int n, int m)
+int DifferentRowsAndColumn(int** matr, int n, int m)
 {
 	int count = 0;
 	for (int i = 0; i < n; i++)
@@ -46,15 +69,27 @@ int DifferentRowsAndColumn(float** matr, int n, int m)
 	return count;
 }
 
-int main()
+int** CreateMatrix(int n, int m)
 {
-	int  n, m;
+	int** arr = new int* [n];
 
-	scanf_s("%d%d", &n, &m);
+	for (int i = 0; i < n; i++)
+	{
+		arr[i] = new int[m];
+	}
 
-	float** arr = FillMatrix(n, m);
-	
-	PrintMatrix(arr, n, m);
+	return arr;
+}
 
-	printf("%d", DifferentRowsAndColumn(arr, n, m));
+int** FillMatrix(int n, int m)
+{
+	int** arr = CreateMatrix(n, m);
+
+	for (int i = 0; i < n; i++)
+	{
+		printf("%d string:\n", i + 1);
+		for (int j = 0; j < m; j++)
+			scanf_s("%d", &arr[i][j]);
+	}
+	return arr;
 }
