@@ -1,0 +1,77 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+//Кузнецов Андрей
+//Определить, есть ли арифметическая прогрессия между первым и последним совершенным числом массива
+
+bool IsPerfect(int n);
+void FindPerfect(int* arr, int n, int& firstNdx, int& secondNdx);
+bool Prog(int* arr, int k, int l);
+
+int main()
+{
+	int n = 5, firstNdx, secondNdx;
+
+	int* arr = new int[n] {1, 6, 17, 28, 2};
+	
+	FindPerfect(arr, n, firstNdx, secondNdx);
+
+	printf("%d\n%d\n", firstNdx, secondNdx);
+
+	if (Prog(arr, firstNdx, secondNdx))
+		printf("True");
+	else
+		printf("False");
+}
+
+bool IsPerfect(int n)
+{
+	if (n < 2)
+		return false;
+	else
+	{
+		int sum = 0, del = 1;
+		while (del < n)
+		{
+			if (n % del == 0)
+				sum += del;
+			del++;
+		}
+		if (sum == n)
+			return true;
+		else
+			return false;
+	}
+}
+
+void FindPerfect(int* arr, int n, int& firstNdx, int& secondNdx)
+{
+	for (int i = 0; i < n; i++)
+		if (IsPerfect(arr[i]))
+		{
+			firstNdx = i;
+			break;
+		}
+	for (int i = n-1; i >= 0; i--)
+		if (IsPerfect(arr[i]))
+		{
+			secondNdx = i;
+			break;
+		}
+}
+
+bool Prog(int* arr, int k, int l)
+{
+	int diff = arr[k + 1] - arr[k];
+	bool isProg = true;
+
+	for (int i = k + 1; i < l - 1; i++)
+		if (arr[i + 1] - arr[i] != diff)
+		{
+			isProg = false;
+			break;
+		}
+	return isProg;
+}
