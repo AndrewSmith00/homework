@@ -1,0 +1,56 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+//Кузнецов Андрей
+//Строка с минимальной суммой элементов и её индекс
+
+int** CreateMatrix(int n, int m);
+int** FillMatrix(int n, int m);
+
+int main()
+{
+	int min = INT_MAX, sum, ndx, n = 2, m = 2;
+
+	int** arr = FillMatrix(n, m);
+
+	for (int i = 0; i < n; i++)
+	{
+		sum = 0;
+		for (int j = 0; j < m; j++)
+			sum += arr[i][j];
+		if (sum < min)
+		{
+			min = sum;
+			ndx = i;
+		}
+	}
+
+	printf("\nNumber of lowest string is %d\nSum of elements is %d", ndx, min);
+}
+
+int** CreateMatrix(int n, int m)
+{
+	int** arr = new int* [n];
+
+	for (int i = 0; i < n; i++)
+	{
+		arr[i] = new int[m];
+	}
+
+	return arr;
+}
+
+int** FillMatrix(int n, int m)
+{
+	int** arr = CreateMatrix(n, m);
+
+	for (int i = 0; i < n; i++)
+	{
+		printf("%d string:\n", i + 1);
+		for (int j = 0; j < m; j++)
+			scanf_s("%d", &arr[i][j]);
+	}
+	return arr;
+}
