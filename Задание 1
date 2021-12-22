@@ -3,6 +3,9 @@
 
 using namespace std;
 
+//Кузнецов Андрей
+//Количество и сумма цифр числа
+
 int main()
 {
     int number = 1212, count = 0, sum = 0;
