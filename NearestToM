@@ -1,31 +1,29 @@
+#include <iostream>
+#include <stdio.h>
+#include <math.h>
+
+using namespace std;
+
+//Кузнецов Андрей
+//Элемент массива, ближайшего к M, и его индекс
+
 void Nearest(int* arr, int n, int M, int& nearest, int& ndx)
 {
 	int range = INT_MAX;
 	for (int i = 0; i < n; i++)
-	{
 		if (abs(M - arr[i]) < range)
 		{
 			range = abs(M - arr[i]);
 			nearest = arr[i];
 			ndx = i;
 		}
-	}
 }
 
 int main()
 {
-	int nearest, ndx, n, M;
+	int nearest, ndx, n = 5, M = 10;
 
-	scanf_s("%d", &n);
-
-	int* arr = new int[n];
-	
-	for (int i = 0; i < n; i++)
-	{
-		scanf_s("%d", &arr[i]);
-	}
-
-	scanf_s("%d", &M);
+	int* arr = new int[n]{1,2,3,4,5}
 
 	Nearest(arr, n, M, nearest, ndx);
 	printf("%d\n%d", nearest, ndx);
