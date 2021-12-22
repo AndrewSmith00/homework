@@ -1,52 +1,22 @@
 #include <iostream>
 #include <stdio.h>
 
-int const len = 5;
+using namespace std;
 
-//Кузнецов Андрей, 15 группа
-//Поиск максимального отрицательного элемента в последовательности
-int main() 
+//Кузнецов Андрей
+//Находит максимальный отрицатеьный элемент последовательности
+
+int main()
 {
-	
-	int max = 0, ndx = -1;
-	
+	int max = INT_MIN, ndx = -1, len = 5;
 
-	int a[len];
+	int* arr = new int[len] {-100, -4, -10, 0, 1};
 
-	printf("Enter an array\n");
-
-	for (int i = 0; i < len; i++)
-	{
-		scanf_s("%d", &a[i]);
-	}
-
-	//Поиск первого неотрицательного элемента массива и ввод max и ndx
-	for (int i = 0; i < len; i++)
-	{
-		if (a[i] < 0)
+	for (int i = ndx; i < len; i++)
+		if ((arr[i] < 0) && (arr[i] > max))
 		{
-			max = a[i];
+			max = arr[i];
 			ndx = i;
-			break;
 		}
-	}
-
-	if (ndx == -1)		//Если отрицательных элементов нет, то вывод соответствующего сообщения
-	{
-		printf("There is no negative numbers in array\n");
-	}
-	else		//Если отрицательные есть, то поиск максимального и его индекса, начиная с индекса первого отрицательного числа
-	{
-		for (int i = ndx; i < len; i++)
-		{
-			if ((a[i] < 0) && (a[i] > max))
-			{
-				max = a[i];
-				ndx = i;
-			}
-		}
-		printf("Maximum negative number is: %d, index is: %d", max, ++ndx);
-	}
-	
-	return 0;
+		printf("Maximum negative number is: %d, index is: %d", max, ndx);
 }
