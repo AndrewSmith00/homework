@@ -1,0 +1,26 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+//Кузнецов Андрей
+//Определяет, есть ли хотя бы одна цифра 9 в числе
+
+int main()
+{
+    int num = 191;
+    bool flag = false;
+    while (num > 0)
+    {
+        if (num % 10 == 9)
+        {
+            flag = true;
+            break;
+        }
+        num /= 10;
+    }
+    if (flag)
+        printf("There is 9 in number");
+    else
+        printf("There is no 9 in number");
+}
