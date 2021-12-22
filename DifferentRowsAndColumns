@@ -1,0 +1,60 @@
+bool RowIsDifferent(float* row, int m)
+{
+	bool isDifferent = true;
+	for (int i = 0; i < m - 1; i++)
+	{
+		for (int j = i + 1; j < m; j++)
+		{
+			if (row[j] == row[i])
+			{
+				isDifferent = false;
+			}
+		}
+	}
+	return isDifferent;
+}
+
+bool ColumnIsDifferent(float** matr, int column, int n)
+{
+	bool isDifferent = true;
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = i + 1; j < n; j++)
+		{
+			if (matr[i][column] == matr[j][column])
+			{
+				isDifferent = false;
+			}
+		}
+	}
+	return isDifferent;
+}
+
+int DifferentRowsAndColumn(float** matr, int n, int m)
+{
+	int count = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (RowIsDifferent(matr[i], m))
+			count++;
+	}
+	for (int j = 0; j < m; j++)
+	{
+		if (ColumnIsDifferent(matr, j, n))
+			count++;
+	}
+	return count;
+}
+
+int main()
+{
+	int  n, m;
+
+	scanf_s("%d%d", &n, &m);
+
+	float** arr = FillMatrix(n, m);
+	
+	PrintMatrix(arr, n, m);
+
+	printf("%d", DifferentRowsAndColumn(arr, n, m));
+}
