@@ -1,0 +1,21 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+//Кузнецов Андрей
+//Сумма элементов последовательности, заканчивающихся цифрой 5
+int main()
+{
+	int n = 8, sum = 0;
+	int* arr = new int[n] {1, 2, 3, 4, 5, 5, 225, 8};
+
+	for (int i = 0; i < n; i++)
+		if (arr[i] % 10 == 5)
+			sum += arr[i];
+
+	if (sum > 0)
+		printf("%d", sum);
+	else
+		printf("False");
+}
