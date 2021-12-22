@@ -1,22 +1,15 @@
-#include <iostream>
-#include <stdio.h>
+using namespace std;
 
+//Кузнецов Андрей
+//Определить, является ли число палиндромом
 
-int main()		//Проверка на палиндром
+int main()		
 {
-	int num;
-	
-	printf("Enter a number\n");
-	scanf_s("%d", &num);
-
-	int number = num;
-	int backwardNumber = 0;
-	int ost = 0;
+	int number = 121, num = number, backwardNumber = 0;
 
 	while (number > 0)
 	{
-		ost = number % 10;
-		backwardNumber = backwardNumber * 10 + ost;
+		backwardNumber = backwardNumber * 10 + number % 10;
 		number /= 10;
 	}
 	if (num == backwardNumber)
