@@ -1,0 +1,35 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+//Кузнецов Андрей
+//Циклический сдвиг массива вправо на 1 и влево на k
+
+int main()
+{
+	int n = 8, range = 3;
+	int* arr = new int[n] {1, 2, 3, 4, 5, 6, 7, 8};
+	int lastN = arr[n - 1], firstN;
+
+	int* first = arr, * second = arr;
+
+	for (int i = n - 1; i >= 1; i--)
+		first[i] = first[i - 1];
+	first[0] = lastN;
+
+	for (int i = 0; i < n; i++)
+		printf("%d", first[i]);
+
+	for (int i = range; i >= 0; i--)
+	{
+		firstN = second[0];
+		for (int j = 0; j < n - 1; j++)
+			second[j] = second[j + 1];
+		second[n - 1] = firstN;
+	}
+
+	printf("\n\n");
+	for (int i = 0; i < n; i++)
+		printf("%d", second[i]);
+}
