@@ -1,0 +1,16 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+int main()
+{
+    int number = 1212, count = 0, sum = 0;
+    while (number > 0)
+    {
+        count++;
+        sum += number % 10;
+        number = number / 10;
+    }
+    printf("Amount of digits is %d\nSum of digits is %d\n", count, sum);
+}
