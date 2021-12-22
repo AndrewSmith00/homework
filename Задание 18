@@ -1,0 +1,96 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+//Кузнецов Андрей
+/*Транспонирование квадратной матрицы
+* a) Передача результата в другую матрицу
+* б) Транспонирование исходной матрицы
+*/
+
+int** CreateMatrix(int n, int m);
+int** FillMatrix(int n, int m);
+int** transpose(int** matr, int n, int m);
+void PrintMatrix(int** arr, int n, int m);
+void TransposeMatr(int** &matr, int n, int m);
+
+int main()
+{
+	int n = 3, m = 3;
+
+	int** arr = FillMatrix(n, m);
+
+	PrintMatrix(arr, n, m);
+
+	int** newMatr = transpose(arr, n, m);
+
+	PrintMatrix(newMatr, n, m);
+
+	TransposeMatr(arr, n, m);
+
+	PrintMatrix(arr, n, m);
+}
+
+int** transpose(int** matr, int n, int m)
+{
+	int** tempMatr = CreateMatrix(n, m);
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			tempMatr[i][j] = matr[j][i];
+		}
+	}
+	return tempMatr;
+}
+
+void TransposeMatr(int**& matr, int n, int m)
+{
+	int** tempMatr = CreateMatrix(n, m);
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			tempMatr[i][j] = matr[j][i];
+		}
+	}
+	matr = tempMatr;
+}
+
+int** CreateMatrix(int n, int m)
+{
+	int** arr = new int* [n];
+
+	for (int i = 0; i < n; i++)
+	{
+		arr[i] = new int[m];
+	}
+
+	return arr;
+}
+
+int** FillMatrix(int n, int m)
+{
+	int** arr = CreateMatrix(n, m);
+
+	for (int i = 0; i < n; i++)
+	{
+		printf("%d string:\n", i + 1);
+		for (int j = 0; j < m; j++)
+			scanf_s("%d", &arr[i][j]);
+	}
+	return arr;
+}
+
+void PrintMatrix(int** arr, int n, int m)
+{
+	for (int i = 0; i < n; i++)
+	{
+		printf("\n");
+		for (int j = 0; j < m; j++)
+			printf("%d\t", arr[i][j]);
+		printf("\n");
+	}
+	printf("\n");
+}
