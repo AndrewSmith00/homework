@@ -4,11 +4,8 @@
 
 int main()
 {
-	int num;
-	int arrayOfDigits[10] = {};
-
-	printf("Enter a number\n");
-	scanf_s("%d", &num);
+	int num = 121
+	int* arrayOfDigits = new int[10]{0,0,0,0,0,0,0,0,0,0};
 
 	while (num > 0)
 	{
