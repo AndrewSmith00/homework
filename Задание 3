@@ -1,0 +1,35 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+//Кузнецов Андрей
+//Если n < 10, то M = n!, иначе M = n^k, где k подаётся с ввода
+
+int main()
+{
+	int num, n, M = 1, i = 1, k;
+	printf("Enter a number\n");
+	scanf_s("%d", &num);
+	if (num < 10)
+	{
+		while (i <= num)
+		{
+			M = M * i;
+			i++;
+		}
+		printf("%d! equals %d\n", num, M);
+	}
+	else
+	{
+		printf("Enter an extent\n");
+		scanf_s("%d", &k);
+		while (i <= k)
+		{
+			M = M * num;
+			i++;
+		}
+
+		printf("%d^%d equals %d\n", num, k, M);
+	}
+}
