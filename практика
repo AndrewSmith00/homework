@@ -1,0 +1,457 @@
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+int* CreateArray(int len);
+void PrintArray(int* arr, int len);
+int DigitSum(int x);
+bool IsSelfgenerated(int x);
+int CountSelfgenerated(int n);
+int* FindSelfgenerated(int number, int &count);
+
+float** IdentityMatrix(int n);
+float** CreateMatrix(int n, int m);
+void PrintMatrix(float** arr, int n, int m);
+float** FillMatrix(int n, int m);
+float Det(float** arr, int n);
+float** GetMinor(float** matrix, int n, int row, int column);
+void CreateReversed(float** matr, int n);
+void ReplaceRows(float** matr, int thisRow, int n, float** e);
+void ToOne(float* row, int n, int unit, float* e);
+void DiffRows(float* e1, float* e2, float* r1, float* r2, int unit, int n);
+void UnderMainDiagonal(float** matr, float** identity, int n);
+void AboveMainDiagonal(float** matr, float** identity, int n);
+
+float** CreateMinorMatrix(float** matr, int n);
+float** transpose(float** matr, int n);
+void GetReversedMatrix(float** matr, int n);
+
+void ClearMemory(float** matr, int n);
+
+
+bool RowIsDifferent(float* row, int m)
+{
+	bool isDifferent = true;
+	for (int i = 0; i < m - 1; i++)
+	{
+		for (int j = i + 1; j < m; j++)
+		{
+			if (row[j] == row[i])
+			{
+				isDifferent = false;
+			}
+		}
+	}
+	return isDifferent;
+}
+
+bool ColumnIsDifferent(float** matr, int column, int n)
+{
+	bool isDifferent = true;
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = i + 1; j < n; j++)
+		{
+			if (matr[i][column] == matr[j][column])
+			{
+				isDifferent = false;
+			}
+		}
+	}
+	return isDifferent;
+}
+
+int DifferentRowsAndColumn(float** matr, int n, int m)
+{
+	int count = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (RowIsDifferent(matr[i], m))
+			count++;
+	}
+	for (int j = 0; j < m; j++)
+	{
+		if (ColumnIsDifferent(matr, j, n))
+			count++;
+	}
+	return count;
+}
+
+int main()
+{
+	int number, count = 0;
+
+	printf("Enter a number\n");
+	scanf_s("%d", &number);
+
+	if (number < 2)
+		printf("\nThere is no selfgenerated numbers less then %d", number);
+	else
+	{
+		int* arr = FindSelfgenerated(number, count);
+
+		printf("\nSelfgenerated numbers less then %d:\n", number);
+		PrintArray(arr, count);
+	}
+	//printf("Enter a matrix order\n");
+	//int n;
+	//scanf_s("%d", &n);
+
+	//float** matr = FillMatrix(n, n);
+
+	//printf("Original matrix is:\n");
+	//PrintMatrix(matr, n, n);
+
+	//GetReversedMatrix(matr, n);
+
+	//ClearMemory(matr, n);
+
+	//CreateReversed(matr, n);
+	
+}
+
+/*
+*========================================================================================================================================================================================================================================================================
+* Нахождение самопорождённых чисел
+* ======================================================================================================================================================================================================================================================================
+*/
+
+int* CreateArray(int len)
+{
+	int* arr = new int[len];
+	return arr;
+}
+
+void PrintArray(int* arr, int len)
+{
+	for (int i = 0; i < len; i++)
+	{
+		printf("%d ", arr[i]);
+	}
+}
+
+int DigitSum(int number)
+{
+	int sum = 0;
+	while (number > 0)
+	{
+		sum += number % 10;
+		number /= 10;
+	}
+	return sum;
+}
+
+bool IsSelfgenerated(int x)
+{
+	bool isSelfGen = true;
+	for (int i = 1; i < x; i++)
+	{
+		if (x == i + DigitSum(i))
+		{
+			isSelfGen = false;
+			break;
+		}
+	}
+	return isSelfGen;
+}
+
+int CountSelfgenerated(int n)
+{
+	int count = 0;
+	for (int i = 1; i < n; i++)
+		if (IsSelfgenerated(i))
+			count++;
+	return count;
+}
+
+int* FindSelfgenerated(int number, int &count)
+{
+	count = CountSelfgenerated(number);
+
+	int* arr = CreateArray(count);
+
+	for (int i = 0; i < count; i++)
+	{
+		for (int j = 1, k = 0; j < number; j++)
+			if (IsSelfgenerated(j))
+			{
+				arr[k] = j;
+				k++;
+			}
+	}
+
+	return arr;
+}
+
+/*
+*========================================================================================================================================================================================================================================================================
+* Нахождение обратной матрицы
+* ======================================================================================================================================================================================================================================================================
+*/
+
+//				Через единичную матрицу:
+
+float** CreateMatrix(int n, int m)
+{
+	float** arr = new float* [n];
+
+	for (int i = 0; i < n; i++)
+	{
+		arr[i] = new float[m];
+	}
+
+	return arr;
+}
+
+float** FillMatrix(int n, int m)
+{
+	float** arr = CreateMatrix(n, m);
+
+	for (int i = 0; i < n; i++)
+	{
+		printf("%d string:\n", i + 1);
+		for (int j = 0; j < m; j++)
+			scanf_s("%f", &arr[i][j]);
+	}
+	return arr;
+
+	ClearMemory(arr, n);
+}
+
+float** IdentityMatrix(int n)
+{
+	float** arr = CreateMatrix(n, n);
+
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+			if (i == j)
+				arr[i][j] = 1;
+			else
+				arr[i][j] = 0;
+
+	return arr;
+	ClearMemory(arr, n);
+}
+
+
+//Печать матрицы
+void PrintMatrix(float** arr, int n, int m) 
+{
+	for (int i = 0; i < n; i++)
+	{
+		printf("\n");
+		for (int j = 0; j < m; j++)
+			printf("%f\t", arr[i][j]);
+		printf("\n");
+	}
+	printf("\n");
+}
+
+float Det(float** arr, int n)
+{
+	float det = 0, k = 1;
+	if (n == 1)
+		det = arr[0][0];
+	else if (n == 2)
+		det =  arr[0][0] * arr[1][1] - arr[0][1] * arr[1][0];
+	else
+		for (int i = 0; i < n; i++)
+		{
+			int m = n - 1;
+			float** tempMatr = GetMinor(arr, n, 0, i);
+			det = det + k * arr[0][i] * Det(tempMatr, m);
+			k = -k;
+		}
+	return det;
+}
+
+float** GetMinor(float** matrix, int n, int row, int column)
+{
+	float** temp_matr = CreateMatrix(n - 1, n - 1);
+	int ki = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (i != row)
+		{
+			for (int j = 0, kj = 0; j < n; j++) {
+				if (j != column)
+				{
+					temp_matr[ki][kj] = matrix[i][j];
+					kj++;
+				}
+			}
+			ki++;
+		}
+	}
+
+	return temp_matr;
+
+	ClearMemory(temp_matr, n);
+}
+
+void ToOne(float* row, int n, int unit, float* e)
+{
+	float div = row[unit];
+	for (int i = 0; i < n; i++)
+	{
+		
+		row[i] /= div;
+		e[i] /= div;
+	}
+}
+
+void ReplaceRows(float** matr, int thisRow, int n, float** e)
+{
+	float* temp = new float[n];
+	float* tempE = new float[n];
+		for (int i = thisRow + 1; i < n; i++)
+		{
+			if (matr[i][0] != 0)
+			{
+				temp = matr[i];
+				matr[i] = matr[thisRow];
+				matr[thisRow] = temp;
+
+				tempE = e[i];
+				e[i] = e[thisRow];
+				e[thisRow] = temp;
+			}
+		}
+}
+
+void DiffRows(float* e1, float* e2, float* r1, float* r2, int unit, int n)
+{
+	float temp = r2[unit];
+	for (int j = 0; j < n; j++)
+	{
+		r2[j] = r2[j] - (r1[j]) * temp;
+		e2[j] = e2[j] - (e1[j]) * temp;
+	}
+}
+
+void UnderMainDiagonal(float** matr, float** identity, int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			if (i == j)
+			{
+				if (matr[i][j] == 0)
+					ReplaceRows(matr, i, n, identity);
+				if (matr[i][j] != 1)
+					ToOne(matr[i], n, i, identity[i]);
+				if ((i + 1) < n)
+				{
+					for (int k = i + 1; k < n; k++)
+					{
+						DiffRows(identity[i], identity[k], matr[i], matr[k], i, n);
+					}
+				}
+			}
+		}
+	}
+}
+
+void AboveMainDiagonal(float** matr, float** identity, int n)
+{
+	for (int i = n - 1; i >= 0; i--)
+	{
+		for (int j = n - 1; j >= 0; j--)
+		{
+			if (i == j)
+			{
+
+				if ((i - 1) >= 0)
+				{
+					for (int k = i - 1; k >= 0; k--)
+					{
+						DiffRows(identity[i], identity[k], matr[i], matr[k], i, n);
+					}
+				}
+			}
+		}
+	}
+}
+
+void CreateReversed(float** matr,  int n)
+{
+	if (Det(matr, n) == 0)
+	{
+		printf("\nError: determinant equals zero\n");
+	}
+	else
+	{
+		float** identity = IdentityMatrix(n);
+		
+		UnderMainDiagonal(matr, identity, n);
+
+		AboveMainDiagonal(matr, identity, n);
+
+		printf("Reversed matrix is:\n");
+		PrintMatrix(identity, n, n);
+	}
+}
+
+//				Через матрицу миноров:
+
+float** CreateMinorMatrix(float** matr, int n)
+{
+	int m = n - 1, k;
+	float reversedDet = 1 / Det(matr, n);
+	float** temp = CreateMatrix(m, m);
+	float** minorMatr = CreateMatrix(n, n);
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			if ((i + j) % 2 == 0)
+				k = 1;
+			else
+				k = -1;
+			temp = GetMinor(matr, n, i, j);
+			minorMatr[i][j] = k * reversedDet * Det(temp, m);
+		}
+	}
+	return minorMatr;
+
+	ClearMemory(minorMatr, n);
+}
+
+float** transpose(float** matr, int n)
+{
+	float** tempMatr = CreateMatrix(n, n);
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			tempMatr[i][j] = matr[j][i];
+		}
+	}
+	return tempMatr;
+
+	ClearMemory(tempMatr, n);
+}
+
+void GetReversedMatrix(float** matr, int n)
+{
+	if(Det(matr, n) == 0)
+		printf("\nError: determinant equals zero\n");
+	else
+	{
+		matr = CreateMinorMatrix(matr, n);
+		matr = transpose(matr, n);
+		printf("Reversed matrix is");
+		PrintMatrix(matr, n, n);
+	}
+}
+
+void ClearMemory(float** matr, int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		delete [] matr[i];
+	}
+	delete [] matr;
+}
