@@ -1,0 +1,57 @@
+// WorkWithStrings.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+
+#include <iostream>
+#include <string>
+#include <stdio.h>
+
+int SetMenuPointer();
+void UseMenu(int menu_pointer, const char* str1);
+
+int main()
+
+{
+	setlocale(LC_ALL, "Russian");
+
+	char str1[20];
+
+	printf("Введите строку:\n");
+	gets_s(str1);
+
+	int menu_pointer = SetMenuPointer();
+	char temp = menu_pointer;
+	
+	UseMenu(menu_pointer, str1);
+}
+
+int SetMenuPointer()
+{
+	int menu_pointer;
+	printf("\tМЕНЮ\n1. Длина строки.\n2. Сложение строк.\n3. Копирование строк.\nВыберите пункт меню:\n");
+	scanf_s("%d", &menu_pointer);
+	return menu_pointer;
+}
+
+void UseMenu(int menu_pointer, const char* str1)
+{
+	char str2[20];
+	int len;
+
+	switch (menu_pointer)
+	{
+	default:
+		printf("Выбран неизвестный пункт меню");
+		break;
+
+	case 1:
+		len = strlen(str1);
+		printf("Длина строки равна %d", len);
+		break;
+
+	case 2:
+		printf("Введите вторую строку:\n");
+		gets_s(str2);
+		printf(str2);
+		break;
+	}
+}
