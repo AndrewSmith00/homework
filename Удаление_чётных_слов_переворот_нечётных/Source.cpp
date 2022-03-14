@@ -20,9 +20,6 @@ char* getWord(char* str) {
 	char *word = new char[98];
 	char* wordStart = word;
 	for (; *str != '\0'; str++) {
-		if (*str == ' ')
-			continue;
-		else {
 			for (; *str != ' '; str++, word++) {
 				if (*str == '\0') {
 					break;
@@ -31,9 +28,9 @@ char* getWord(char* str) {
 			}
 			*word = '\0';
 			return wordStart;
-		}
 	}
 }
+
 
 char* getNewString(char* str) {
 	char* newString = new char[98];
@@ -43,18 +40,22 @@ char* getNewString(char* str) {
 	char* newWordStart = newWord;
 	int len = 0;
 	for (; *str != '\0'; str++) {
+		if (*str == ' ') {
+			*newString = *str;
+			newString++;
+			str++;
+		}
+
 		word = getWord(str);
 		int len = my_strlen(word);
 		if (len % 2 != 0) {
 			newWord = my_strrev(word);
 			for (; *newWord != '\0'; newWord++, newString++)
 				*newString = *newWord;
-
-			*newString = ' ';
-			newString++;
 		}
-		str += len;
+		str += len - 1;
 	}
 	*newString = '\0';
 	return newStringStart;
 }
+
