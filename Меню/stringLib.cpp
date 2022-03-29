@@ -6,20 +6,22 @@ using namespace std;
 int my_strlen(char* str1)
 {
 	int len = 0;
-	for (; *str1 != '\0'; str1++)
-		len++;
+	int len = 0;
+	while (str1++) len++;
 	return len;
 }
 
 char* my_strcat(char* str1, char* str2)
 {
-
+	int len1 = my_strlen(str1);
 
 	char* start = str1;
-	for (; *str1 != '\0'; str1++) {};
-	for (; *str2 != '\0'; str1++, str2++)
+	str1 += len1;
+	while (*str2 != '\0')
+	{
 		*str1 = *str2;
-	*str1 = '\0';
+		str1++; str2++;
+	}
 	return start;
 }
 
@@ -34,24 +36,26 @@ char* my_strcpy(char* str1, char* str2)
 
 int my_strcmp(char* str1, char* str2)
 {
-	for (; *str1 != '\0'; str1++, str2++)
+	int diff = 0;
+	while (*str1 !='\0' || *str2 != '\0')
 	{
 		if (*str1 != *str2)
-			return -1;
+			diff += *str1 - *str2;
 		if (*str2 == '\0')
-			return 1;
+			diff += *str1;
+		if (*str1 == '\0')
+			diff -= *str2;
 	}
-	if (*str2 != '\0')
-		return -1;
-	return 0;
+	return diff;
 }
 
 char* my_strchr(char* str1, char smb)
 {
-	for (; *str1 != '0'; str1++)
+	while(*str1 != '0') 
 	{
 		if (*str1 == smb)
 			return str1;
+		str1++;
 	}
 	return NULL;
 }
@@ -60,20 +64,22 @@ char* my_strstr(char* str1, char* str2)
 {
 	char* start = NULL;
 
-	for (; *str1 != '\0'; str1++)
+	while (*str1 != '0')
 	{
 		if (*str1 == *str2)
 		{
 			start = str1;
-			for (; *str2 != '\0'; str1++, str2++)
+			while (*str2 != '0')
 			{
 				if (*str1 != *str2)
 				{
 					start = NULL;
 					break;
 				}
+				str1++; str2++;
 			}
 		}
+		str1++;
 	}
 
 	return start;
