@@ -6,7 +6,6 @@ using namespace std;
 int my_strlen(char* str1)
 {
 	int len = 0;
-	int len = 0;
 	while (str1++) len++;
 	return len;
 }
