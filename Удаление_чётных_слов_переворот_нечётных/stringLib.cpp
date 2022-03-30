@@ -13,12 +13,6 @@ int my_strlen(char* str1)
 
 char* my_strcat(char* str1, char* str2)
 {
-	if (98 < my_strlen(str1) + my_strlen(str2))
-	{
-		printf("error");
-		return 0;
-	}
-
 	char* start = str1;
 	for (; *str1 != '\0'; str1++) {};
 	for (; *str2 != '\0'; str1++, str2++)
