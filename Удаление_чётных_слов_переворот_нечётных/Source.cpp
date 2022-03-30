@@ -31,11 +31,7 @@ char* getWord(char* str) {
 
 
 void getNewString(char* str) {
-	char* newString = new char[98];
-	char* newStringStart = newString;
 	char* word = new char[98];
-	char* newWord = new char[97];
-	char* newWordStart = newWord;
 	int len = 0;
 	for (int i = 0; str[i]; i++) {
 		if (str[i] == ' ')
@@ -72,7 +68,6 @@ char* getNewString(char* str) {
 			newString++;
 			str++;
 		}
-
 		word = getWord(str);
 		int len = my_strlen(word);
 		if (len % 2 != 0) {
