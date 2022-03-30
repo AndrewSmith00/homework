@@ -101,15 +101,35 @@ char* my_strrev(char* str1)
 {
 	char* str2 = new char[98];
 	char* start = str2;
+	int n = 0;
 	int len = strlen(str1);
-	for (; *str1 != '\0'; str1++) {}
-	str1--;
-	for (int i = 0; i < len; i++)
+	while(len > 0)
 	{
-		*str2 = *str1;
-		str1--;
-		str2++;
+		str2[n] = str1[len - 1];
+		len--; n++;
 	}
-	*str2 = '\0';
+	str2[n] = '\0';
 	return start;
+}
+
+void my_strdelInPlace(char* str, int k, int m) {
+	while (str[k + m - 1] != '\0')
+	{
+		str[k] = str[k + m];
+		k++;
+	}
+	str[k] = '\0';
+}
+
+void my_strrevInPlace(char* str) {
+	int n = 0;
+	int len = strlen(str);
+	int i = 0;
+	while (i < len/2 + 1)
+	{
+		char temp = str[len - 1];
+		str[len - 1] = str[n];
+		str[n] = temp;
+		len--; n++; i++;
+	}
 }
