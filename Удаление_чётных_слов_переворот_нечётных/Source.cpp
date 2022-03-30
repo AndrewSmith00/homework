@@ -6,6 +6,7 @@ using namespace std;
 
 char* getWord(char* str);
 void getNewString(char* str);
+//char* getNewString(char* str);
 
 int main()
 {
@@ -56,3 +57,32 @@ void getNewString(char* str) {
 		}
 	}
 }
+
+/*
+char* getNewString(char* str) {
+	char* newString = new char[98];
+	char* newStringStart = newString;
+	char* word = new char[98];
+	char* newWord = new char[97];
+	char* newWordStart = newWord;
+	int len = 0;
+	for (; *str != '\0'; str++) {
+		if (*str == ' ') {
+			*newString = *str;
+			newString++;
+			str++;
+		}
+
+		word = getWord(str);
+		int len = my_strlen(word);
+		if (len % 2 != 0) {
+			newWord = my_strrev(word);
+			for (; *newWord != '\0'; newWord++, newString++)
+				*newString = *newWord;
+		}
+		str += len - 1;
+	}
+	*newString = '\0';
+	return newStringStart;
+}
+*/
