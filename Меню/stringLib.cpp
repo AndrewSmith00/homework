@@ -3,38 +3,47 @@
 
 using namespace std;
 
+int const strSize = 99;
+
 int my_strlen(char* str)
 {
 	int len = 0;
-	while (*str++) { 
-		len++; 
+	while (*str++) {
+		len++;
 	}
 	return len;
 }
 
-char* my_strcat(char* str1, char* str2)
+bool my_strcat(char* str1, char* str2)
 {
-	int len1 = my_strlen(str1);
+	if (my_strlen(str1) + my_strlen(str2) > strSize) {
+		printf("Error: string lengths exceed the allowed value");
+		return false;
+	}
 
-	char* start = str1;
-	str1 += len1;
+	str1 += my_strlen(str1);
 	while (*str2++)
 	{
 		*str1 = *str2;
 		str2++;
 	}
-	return start;
+	return true;
 }
 
-char* my_strcpy(char* str1, char* str2)
+bool my_strcpy(char* str1, char* str2)
 {
-	char* start = str2;
+	if (my_strlen(str2) > strSize)
+	{
+		printf("Error: string length exceed the allowed value");
+		return false;
+	}
+
 	while (*str1++) {
 		*str2 = *str1;
 		str2++;
 	}
 	*str2 = '\0';
-	return start;
+	return true;
 }
 
 int my_strcmp(char* str1, char* str2)
@@ -117,13 +126,21 @@ char* my_strrev(char* str1)
 	return start;
 }
 
-void my_strdelInPlace(char* str, int k, int m) {
+bool my_strdelInPlace(char* str, int k, int m) {
+	
+	if ((k + m) > my_strlen(str))
+	{
+		printf("Error: deletion could not complete successfully");
+		return false;
+	}
+
 	while (str[k + m - 1] != '\0')
 	{
 		str[k] = str[k + m];
 		k++;
 	}
 	str[k] = '\0';
+	return true;
 }
 
 void my_strrevInPlace(char* str) {
