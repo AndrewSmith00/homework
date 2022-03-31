@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <stdio.h>
 #pragma warning(disable : 4996) 
 
@@ -25,7 +25,7 @@ int main()
 	//---------------------------------Creating, filling and reading from file---------------------------------
 	FILE* origFile = NULL;
 	const char origFileName[15] = "text.txt";
-	const char context[999] = "Lorem  ipsum\ndolor  sit  amet,  elit.\nEtiam tortor.\nCras  venenatis  lorem.\nProin  pulvinar,\nvehicula    velit.\nSed  eget   massa  ut,\nefficitur  sem.\nInteger  aliquam  diam.\nPellentesque  id  venenatis  augue.\nNunc   molestie.";
+	const char context[999] = "Lorem lorem ipsum ipsum ipsum\ndolor  sit  amet,  elit.\nEtiam tortor.\nCras  venenatis  lorem.\nProin  pulvinar,\nvehicula  velit velit velit.\nSed  eget   massa  ut,\nefficitur  sem.\nInteger  aliquam  diam.\nPellentesque  id  venenatis  augue.\nNunc   molestie.";
 	char buffer[999];
 
 	setFile(origFile, origFileName, context, buffer, 999);
@@ -46,11 +46,11 @@ void createFile(FILE* filePtr, const char* fileName) {
 
 	if (filePtr == NULL)
 	{
-		printf("%s has not been created.\n", fileName);
+		printf("%s has not been created.\n\n", fileName);
 	}
 	else
 	{
-		printf("%s has been created\n", fileName);
+		printf("%s has been created\n\n", fileName);
 	}
 
 	fclose(filePtr);
@@ -107,106 +107,6 @@ char* getWord(char* str) {
 	}
 }
 
-/*
-char** countWordsInStr(char* str, int &countUnique) {
-	int amountOfWords = 0, len, repeate;
-	char* word = new char[198];
-	char* startStr = str;
-	bool flag;
-	char rep[10];
-
-	countUnique = 1;
-
-	for (; *str != '\n'; )
-	{
-		if (*str == ' ')
-			str++;
-		else {
-			word = getWord(str);
-			len = strlen(word);
-			amountOfWords++;
-			str += len + 1;
-		}
-
-	}
-
-	char** arrayOfWords = new char* [amountOfWords];
-	str = startStr;
-
-	for (int i = 0; i < amountOfWords; i++)
-	{
-		arrayOfWords[i] = new char[99];
-	}
-
-	for (int i = 0; *str != '\n'; )
-	{
-		if (*str == ' ')
-			str++;
-		else
-		{
-			word = getWord(str);
-			len = strlen(word);
-			arrayOfWords[i] = word;
-			i++;
-			str += len + 1;
-		}
-
-	}
-
-	for (int i = 0; i < amountOfWords - 1; i++)
-	{
-		flag = true;
-		for (int j = i + 1; j < amountOfWords; j++)
-			if (strcmp(arrayOfWords[i], arrayOfWords[j]) == 0)
-				flag = false;
-		if (flag)
-			countUnique++;
-	}
-
-	char** uniqueWords = new char* [countUnique];
-
-	for (int i = 0; i < amountOfWords; i++)
-	{
-		uniqueWords[i] = new char[99];
-	}
-
-	for (int i = 0, k = 0; i < amountOfWords; i++)
-	{
-		flag = true;
-		for (int j = 0; j < i; j++)
-			if (strcmp(arrayOfWords[i], uniqueWords[j]) == 0)
-				flag = false;
-
-		if (flag)
-		{
-			uniqueWords[k] = arrayOfWords[i];
-			k++;
-		}
-	}
-
-	for (int i = 0; i < countUnique; i++)
-	{
-		repeate = 0;
-		for (int j = 0; j < amountOfWords; j++)
-		{
-			if (strcmp(uniqueWords[i], arrayOfWords[j]) == 0)
-				repeate++;
-		}
-
-		sprintf(rep, "%d", repeate);
-		strcat(uniqueWords[i], " ");
-		strcat(uniqueWords[i], rep);
-		strcat(uniqueWords[i], " ");
-		//printf("%s\n", uniqueWords[i]);
-	}
-
-	str = startStr;
-
-	return uniqueWords;
-}
-*/
-
-
 void result(char* buffer, int size, FILE* filePtr, const char* fileName, FILE* secndfilePtr, const char* secndfileName) {
 	filePtr = fopen(fileName, "r");
 	secndfilePtr = fopen(secndfileName, "w+");
@@ -228,12 +128,6 @@ void result(char* buffer, int size, FILE* filePtr, const char* fileName, FILE* s
 		fputs(amountOfWords, secndfilePtr);
 		amountOfWords[0] = '\0';
 
-		/*
-		for (int i = 0; i < count; i++)
-		{
-			arrOfUniqueWords[i][0] = ' ';
-		}
-		*/
 	}
 	printf("\n");
 
@@ -241,7 +135,7 @@ void result(char* buffer, int size, FILE* filePtr, const char* fileName, FILE* s
 	fclose(secndfilePtr);
 }
 
-char** getArrayOfUniqueWords(char* str, int &count) {
+char** getArrayOfUniqueWords(char* str, int& count) {
 	char** arrOfUniqueWords = new char* [30];
 	char* word = new char[99];
 	bool flag;
@@ -257,7 +151,7 @@ char** getArrayOfUniqueWords(char* str, int &count) {
 	for (int i = 0; ; i++)
 	{
 		while (*str == ' ') str++;
-		if (*str == '\n' || *str =='\0')
+		if (*str == '\n' || *str == '\0')
 			break;
 
 		word = getWord(str);
@@ -266,6 +160,7 @@ char** getArrayOfUniqueWords(char* str, int &count) {
 			if (strcmp(arrOfUniqueWords[j], word) == 0)
 			{
 				flag = false;
+				str = str + len;
 				break;
 			}
 
@@ -284,28 +179,31 @@ void writeAmountOfWords(char* amountOfWords, char* bufferClone, char** arrOfWord
 	int repeate;
 	char* word = new char[99];
 	char* rep = new char[5];
-	
-	for (int i = 0; i < count; i++)
-	{
-		repeate = 0;
-
-		while (*bufferClone == ' ') bufferClone++;
-		if (*bufferClone == '\n' || *bufferClone == '\0')
-			break;
-
-		word = getWord(bufferClone);
+	char* bufferCloneStert = bufferClone;
 
 		for (int j = 0; j < count; j++)
 		{
-			if (strcmp(word, arrOfWords[j]) == 0)
-				repeate++;
-		}
+			repeate = 0;
+			while (*bufferClone != '\n')
+			{
+				while (*bufferClone == ' ') bufferClone++;
+				if (*bufferClone == '\n' || *bufferClone == '\0')
+					break;
 
-		sprintf(rep, "%d", repeate);
-		strcat(amountOfWords, arrOfWords[i]);
-		strcat(amountOfWords, "-");
-		strcat(amountOfWords, rep);
-		strcat(amountOfWords, " ");
-	}
+				word = getWord(bufferClone);
+				bufferClone += strlen(word);
+
+				if (strcmp(word, arrOfWords[j]) == 0)
+					repeate++;
+			}
+
+			sprintf(rep, "%d", repeate);
+			strcat(amountOfWords, arrOfWords[j]);
+			strcat(amountOfWords, "-");
+			strcat(amountOfWords, rep);
+			strcat(amountOfWords, " ");
+
+			bufferClone = bufferCloneStert;
+		}
 	strcat(amountOfWords, "\n");
 }
