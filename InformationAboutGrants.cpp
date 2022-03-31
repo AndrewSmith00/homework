@@ -4,7 +4,8 @@
 using namespace std;
 
 struct Student {
-	char name[30];
+	char name[60];
+	char surname[30];
 	int age;
 	char faculty[15];
 	int marks[4];
@@ -42,6 +43,10 @@ Student* setStudentInfo(int num) {
 		printf("%d.\nName: ", i+1);
 		scanf_s("%s", studentList[i].name, 30);
 		printf("\n");
+		
+		printf("%d.\nSurname: ", i+1);
+		scanf_s("%s", studentList[i].surname, 30);
+		printf("\n");
 
 		printf("Age: ");
 		scanf_s("%d", &studentList[i].age);
@@ -67,7 +72,7 @@ void printStudentInfo(Student* studentList, int num) {
 
 	for (int i = 0; i < num; i++)
 	{
-		printf("%d.\nName: %s\n", i + 1, studentList[i].name);
+		printf("%d.\nName: %s\n", i + 1, strcat(studentList[i].name, studentList[i].surname)); 
 
 		printf("Age: %d\n", studentList[i].age);
 
@@ -97,7 +102,7 @@ void printStudentsWithGrants(Student* studentList, int num) {
 	for (int i = 0; i < num; i++)
 		if (studentList[i].isGrant)
 		{
-			printf("%s\n", studentList[i].name);
+			printf("%s %d %s\n", strcat(studentList[i].name, studentList[i].surname), studentList[i].age, studentList[i].faculty);
 			count++;
 		}
 
