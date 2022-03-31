@@ -6,12 +6,15 @@ using namespace std;
 
 char* getWord(char* str);
 void getNewString(char* str);
+int findPos(char* str, char* source);
 //char* getNewString(char* str);
 
 int main()
 {
-	char str[999] = "Lorem    ipsum dolor sit amet, consectetur adipiscing elit. Cras elit ex, posuere et diam id, imperdiet dictum nulla. Donec enim libero, ullamcorper sed justo ut, lacinia pharetra purus. Aliquam et massa commodo, mollis urna vitae, varius quam. Vivamus vel lobortis ex, id pharetra est.";
-	getNewString(str);
+	char str[999] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt sagittis lorem. Duis nec dolor luctus, fringilla turpis in, dapibus leo.";
+ 	getNewString(str);
+	char str1[99] = "strstr";
+	//printf("%d", sizeof(str1));
 	printf("%s", str);
 }
 
@@ -29,27 +32,29 @@ char* getWord(char* str) {
 	return wordStart;
 }
 
-
 void getNewString(char* str) {
 	char* word = new char[98];
+	char* temp = str;
 	int len = 0;
-	for (int i = 0; str[i]; i++) {
-		if (str[i] == ' ')
-			continue;
+	while(*temp != '\0') {
+		while (*temp == ' ')
+			temp++;
 
-		word = getWord(str + i);
+		word = getWord(temp);
 		int len = my_strlen(word);
-		int n = 0;
 		if (len % 2 != 0) {
 			my_strrevInPlace(word);
-			while (n < len)
+			while (*word != '\0')
 			{
-				str[i] = word[n];
-				i++; n++;
+				*temp = *word;
+				temp++; word++;
 			}
 		}
 		else {
-			my_strdelInPlace(str, i, i + len - 1);
+			char* wordPos = my_strstr(str, word);
+			int pos = (wordPos - str);
+			my_strdelInPlace(str, pos, pos + len - 1);
+			//if (*temp == '\0') break;
 		}
 	}
 }
