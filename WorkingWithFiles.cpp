@@ -1,99 +1,87 @@
-#include <iostream>
-#include <stdio.h>
-#pragma warning(disable : 4996) 
-
-using namespace std;
-
-struct iniqueWords
-{
-	char word[30];
-	int frequency = 1;
-};
-
-void createFile(FILE* filePtr, const char* fileName);
-void fillFile(FILE* filePtr, const char* context, const char* fileName);
-void printFile(char* buffer, int size, FILE* filePtr, const char* fileName);
-void setFile(FILE* filePtr, const char* fileName, const char* context, char* buffer, int size);
-
+void createFile(char* fileName);
 char* getWord(char* str);
-void result(char* buffer, int size, FILE* filePtr, const char* fileName, FILE* secndfilePtr, const char* secndfileName);
+void result(char* sourceName, char* resultName);
 char** getArrayOfUniqueWords(char* str, int& count);
-void writeAmountOfWords(char* amountOfWords, char* bufferClone, char** arrOfWords, int count);
+void writeAmountOfWords(char* amountOfWords, char* str);
 
 int main()
 {
-	//---------------------------------Creating, filling and reading from file---------------------------------
-	FILE* origFile = NULL;
-	const char origFileName[15] = "text.txt";
-	const char context[999] = "Lorem lorem ipsum ipsum ipsum\ndolor  sit  amet,  elit.\nEtiam tortor.\nCras  venenatis  lorem.\nProin  pulvinar,\nvehicula  velit velit velit.\nSed  eget   massa  ut,\nefficitur  sem.\nInteger  aliquam  diam.\nPellentesque  id  venenatis  augue.\nNunc   molestie.";
-	char buffer[999];
+	setlocale(LC_ALL, "Rus");
 
-	setFile(origFile, origFileName, context, buffer, 999);
+	//---------------------------------Creating, filling and reading from file---------------------------------
+	char fileName[15];
+
+	printf("Введите название файла:\n");
+	scanf_s("%s", fileName, sizeof(fileName));
+
+	createFile(fileName);
 
 	//---------------------------------Amount of words in every string-----------------------------------------
 
-	FILE* resultFile = NULL;
-	const char resultFileName[15] = "result.txt";
+	char resultName[15] = "result.txt";
 
-	createFile(resultFile, resultFileName);
+	printf("Введите название файла для хранения результата:\n");
+	scanf_s("%s", resultName, sizeof(resultName));
 
-	result(buffer, 999, origFile, origFileName, resultFile, resultFileName);
+	result(fileName, resultName);
 }
 
-void createFile(FILE* filePtr, const char* fileName) {
+void createFile(char* fileName)
+{
+	//--------------------------------Открытие файла---------------------------------
+	FILE* fPtr;
+	char buffer[499];
 
-	filePtr = fopen(fileName, "w");
+	fPtr = fopen(fileName, "w");
 
-	if (filePtr == NULL)
+	//--------------------------------Ввод содержимого-------------------------------
+
+	if (fPtr == NULL) 
 	{
-		printf("%s has not been created.\n\n", fileName);
+		printf("Файл <<%s>> не был создан\n\n", fileName);
 	}
 	else
 	{
-		printf("%s has been created\n\n", fileName);
+		printf("Вводите содержимое файла. Для завершения введите exit\n");
+
+		while (true) {
+			gets_s(buffer);
+
+			if (strcmp(buffer, "exit") == 0) {
+				fputs("\0", fPtr);
+				break;
+			}
+
+			//buffer[strlen(buffer) + 1] = '\n';
+			fputs(buffer, fPtr);
+			fputs("\n", fPtr);
+
+			buffer[0] = '\0';
+		}
+
+		fputs("\0", fPtr);
+
+		fclose(fPtr);
+
+		//-------------------------------Вывод на консоль---------------------------
+
+		fPtr = fopen(fileName, "r");
+
+		system("cls");
+		printf("Содержимое файла:\n");
+
+		while (fgets(buffer, 99, fPtr) != NULL) {
+			printf("%s", buffer);
+		}
+		printf("\n");
+
+		fclose(fPtr);
 	}
-
-	fclose(filePtr);
-}
-
-void fillFile(FILE* filePtr, const char* context, const char* fileName) {
-	filePtr = fopen(fileName, "w+");
-
-	int len = strlen(context);
-
-	for (int i = 0; i < len; i++) {
-		fputc(context[i], filePtr);
-	}
-	fputc('\0', filePtr);
-
-	fclose(filePtr);
-}
-
-void printFile(char* buffer, int size, FILE* filePtr, const char* fileName) {
-
-	filePtr = fopen(fileName, "r");
-
-	while (fgets(buffer, size, filePtr) != NULL) {
-		printf("%s", buffer);
-	}
-	printf("\n");
-
-	fclose(filePtr);
-}
-
-void setFile(FILE* filePtr, const char* fileName, const char* context, char* buffer, int size)
-{
-	createFile(filePtr, fileName);
-	fillFile(filePtr, context, fileName);
-	printFile(buffer, size, filePtr, fileName);
 }
 
 char* getWord(char* str) {
 	char* word = new char[198];
 	char* wordStart = word;
-
-	//while (*str == ' ')
-		//str++;
 
 	for (; *str != '\n'; str++) {
 		for (; *str != ' '; str++, word++) {
@@ -107,32 +95,25 @@ char* getWord(char* str) {
 	}
 }
 
-void result(char* buffer, int size, FILE* filePtr, const char* fileName, FILE* secndfilePtr, const char* secndfileName) {
-	filePtr = fopen(fileName, "r");
-	secndfilePtr = fopen(secndfileName, "w+");
-	int countUnique = 0, bufferLen, repeate = 0, count;
-	char* bufferStart;
-	char** arrOfUniqueWords;
-	char* bufferClone = new char[999];
+void result(char* sourceName, char* resultName)
+{
+	FILE* source = fopen(sourceName, "r");
+	FILE* result = fopen(resultName, "w");
+	char buffer[99];
 	char* amountOfWords = new char[999]{ "" };
+	int count;
 
+	while (fgets(buffer, 99, source) != NULL) {
 
-	while (fgets(buffer, size, filePtr) != NULL) {
-		bufferStart = buffer;
-		strcpy(bufferClone, buffer);
+	writeAmountOfWords(amountOfWords, buffer);
 
-		arrOfUniqueWords = getArrayOfUniqueWords(bufferClone, count);
-
-		writeAmountOfWords(amountOfWords, bufferClone, arrOfUniqueWords, count);
-
-		fputs(amountOfWords, secndfilePtr);
-		amountOfWords[0] = '\0';
-
+	fputs(amountOfWords, result);
+	amountOfWords[0] = '\0';
 	}
 	printf("\n");
 
-	fclose(filePtr);
-	fclose(secndfilePtr);
+	fclose(source);
+	fclose(result);
 }
 
 char** getArrayOfUniqueWords(char* str, int& count) {
@@ -166,7 +147,7 @@ char** getArrayOfUniqueWords(char* str, int& count) {
 
 		if (flag)
 		{
-			arrOfUniqueWords[i] = word;
+			arrOfUniqueWords[count] = word;
 			len = strlen(word);
 			str = str + len;
 			count++;
@@ -175,35 +156,38 @@ char** getArrayOfUniqueWords(char* str, int& count) {
 	return arrOfUniqueWords;
 }
 
-void writeAmountOfWords(char* amountOfWords, char* bufferClone, char** arrOfWords, int count) {
-	int repeate;
+void writeAmountOfWords(char* amountOfWords, char* str) {
+	int repeate, count;
+	char** arrOfWords;
 	char* word = new char[99];
 	char* rep = new char[5];
-	char* bufferCloneStert = bufferClone;
+	char* strStart = str;
 
-		for (int j = 0; j < count; j++)
+	arrOfWords = getArrayOfUniqueWords(str, count);
+
+	for (int j = 0; j < count; j++)
+	{
+		repeate = 0;
+		while (*str != '\n')
 		{
-			repeate = 0;
-			while (*bufferClone != '\n')
-			{
-				while (*bufferClone == ' ') bufferClone++;
-				if (*bufferClone == '\n' || *bufferClone == '\0')
-					break;
+			while (*str == ' ') str++;
+			if (*str == '\n' || *str == '\0')
+				break;
 
-				word = getWord(bufferClone);
-				bufferClone += strlen(word);
+			word = getWord(str);
+			str += strlen(word);
 
-				if (strcmp(word, arrOfWords[j]) == 0)
-					repeate++;
-			}
-
-			sprintf(rep, "%d", repeate);
-			strcat(amountOfWords, arrOfWords[j]);
-			strcat(amountOfWords, "-");
-			strcat(amountOfWords, rep);
-			strcat(amountOfWords, " ");
-
-			bufferClone = bufferCloneStert;
+			if (strcmp(word, arrOfWords[j]) == 0)
+				repeate++;
 		}
+
+		sprintf(rep, "%d", repeate);
+		strcat(amountOfWords, arrOfWords[j]);
+		strcat(amountOfWords, "-");
+		strcat(amountOfWords, rep);
+		strcat(amountOfWords, " ");
+
+		str = strStart;
+	}
 	strcat(amountOfWords, "\n");
 }
