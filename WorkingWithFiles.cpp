@@ -1,3 +1,9 @@
+#include <iostream>
+#include <stdio.h>
+#pragma warning(disable : 4996) 
+
+using namespace std;
+
 void createFile(char* fileName);
 char* getWord(char* str);
 void result(char* sourceName, char* resultName);
