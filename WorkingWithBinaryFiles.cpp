@@ -164,5 +164,4 @@ void getGroupsInfo(Student* student, Group* groupInfo, int n)
 		groupInfo[num].booksNumber += student[i].booksNumber;
 		groupInfo[num].booksValue += student[i].booksValue;
 	}
-
 }
