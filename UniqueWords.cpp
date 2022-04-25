@@ -1,27 +1,40 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
-#pragma warning(disable : 4996)
 
+void uniqueWordsInFile(char* filename);
 char* getWord(char* str);
 int strLen(const char* str);
 int compareStrings(const char* str1, const char* str2);
-void uniqueWords(const char* fName1, const char* fName2);
-int uniqueWordsInFile(char** arr, const char* filename, int &size);
 
 int main()
 {
-	char filename1[99] = "tellmewhy1.txt";
-	char filename2[99] = "running.txt";
-	//int count;
-
-	//char** arr = new char* [9999];
-	//uniqueWordsInFile(arr, filename2, count);
-	uniqueWords(filename1, filename2);
+    char filename[99] = "tellmewhy2.txt";
+    uniqueWordsInFile(filename);
+    return 0;
 }
+
+/*
+char* getWord(char* str)
+{
+    char* word = (char*) malloc (99 * sizeof(char));
+    int i;
+
+    i = 0;
+
+    while(str[i] != ' ' || str[i] != '\n')
+    {
+        word[i] = str[i];
+        i++;
+    }
+
+    word[i] = '\0';
+    return word;
+}
+*/
 
 char* getWord(char* str) 
 {
-	char* word = new char[9999];
+	char* word = (char*) malloc (99* sizeof(char));
 	char* wordStart = word;
 
 	for (; *str != '\n'; str++) {
@@ -34,6 +47,7 @@ char* getWord(char* str)
 		*word = '\0';
 		return wordStart;
 	}
+	return wordStart;
 }
 
 int strLen(const char* str)
@@ -64,117 +78,96 @@ int compareStrings(const char* str1, const char* str2)
 	return 0;
 }
 
-void uniqueWords(const char* filename1, const char* filename2)
+void uniqueWordsInFile(char* filename)
 {
-	char** firstFileUniqueWords = new char* [999];
-	char** secondFileUniqueWords = new char* [999];
-	char** temp = new char* [999];
-	char** result = new char* [999];
-	int size1, size2, tempSize, resultSize, flag;
+    char** arr;
+    FILE* file;
+    char* word;
+    char* str;
+    int len, flag, size;
 
-	uniqueWordsInFile(firstFileUniqueWords, filename1, size1);
-	uniqueWordsInFile(secondFileUniqueWords, filename2, size2);
+    file = fopen(filename, "r");
 
-	tempSize = 0;
-	resultSize = 0;
+    if(!file)
+    {
+        printf("File not opened!\n");
+    }
+    else
+    {
+        arr = (char**) malloc(99 * sizeof(char*));
+        for(int i = 0; i < 99; i++)
+        {
+            arr[i] = (char*) malloc(99 * sizeof(char));
+            arr[i] = " ";
+        }
 
-	for (int i = 0; i < size1; i++)
+        str = (char*) malloc(999 * sizeof(char));
+        size = 0;
+        /*
+        while(fgets(str, 999, file) != NULL)
+        {
+            for(int i = 0; str[i] != '\n'; i++)
+            {
+                while (str[i] == ' ') i++;
+                if (str[i] == '\n') break;
+
+                word = getWord(str);
+                len = strLen(word);
+                flag = 1;
+
+                for(int j = 0; j < size; j++)
+                    if (compareStrings(arr[j], word) == 0)
+                    {
+                        flag =  0;
+                        i = i + len;
+                        break;
+                    }
+                
+                if (flag)
+                {
+                    arr[size] = word;
+                    i = i + len;
+                    size++;
+                }
+            }
+        }
+        */
+        while (fgets(str, 999, file) != NULL)
 	{
-		flag = 1;
-		for (int j = 0; j < size2; j++)
-		{
-			if (compareStrings(firstFileUniqueWords[i], secondFileUniqueWords[j]) == 0)
-			{
-				flag = 0;
-				break;
-			}
-		}
-		if (flag)
-		{
-			result[resultSize] = firstFileUniqueWords[i];
-			resultSize++;
-		}
-	}
-
-	for (int i = 0; i < size2; i++)
-	{
-		flag = 1;
-		for (int j = 0; j < size1; j++)
-		{
-			if (compareStrings(secondFileUniqueWords[i], firstFileUniqueWords[j]) == 0)
-			{
-				flag = 0;
-				break;
-			}
-		}
-		if (flag)
-		{
-			result[resultSize] = secondFileUniqueWords[i];
-			resultSize++;
-		}
-	}
-
-	for (int i = 0; i < resultSize; i++)
-	{
-		printf("%s ", result[i]);
-	}
-}
-
-int uniqueWordsInFile(char** arr, const char* filename, int &size)
-{
-	FILE* file;
-	char* word;
-	char* str = new char[9999];
-	int length, i, flag;
-
-	file = fopen(filename, "r");
-	if (!file)
-	{
-		printf("File not open!\n");
-		return -1;
-	}
-
-	size = 0;
-
-	for (int i = 0; i < 999; i++)
-	{
-		arr[i] = new char[99]{ " " };
-	}
-
-	while (fgets(str, 9999, file) != NULL)
-	{
-		for (int i = 0; ; i++)
+		for (int i = 0; str[i] != '\0'; i++)
 		{
 			while (*str == ' ') str++;
 			if (*str == '\n' || *str == '\0')
 				break;
 
 			word = getWord(str);
-			length = strLen(word);
+			len = strLen(word);
 			flag = 1;
 
 			for (int j = 0; j < size; j++)
 				if (compareStrings(arr[j], word) == 0)
 				{
 					flag = 0;
-					str = str + length;
+					str = str + len;
 					break;
 				}
 
 			if (flag)
 			{
 				arr[size] = word;
-				str = str + length;
+				str = str + len;
 				size++;
 			}
 		}
 	}
+    for(int i = 0; i < size; i++)
+        printf("%s ", arr[i]);
 
-	//for (int j = 0; j < size; j++)
-	//{
-	//	printf("%s ", arr[j]);
-	//}
-	fclose(file);
-
-	return 0;
+    for(int i = 0; i < 99; i++)
+        free(arr[i]);
+    free(arr);
+    free(word);
+    free(str);
+    fclose(file);
+    }
 }
