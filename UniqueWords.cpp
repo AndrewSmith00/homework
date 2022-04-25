@@ -5,6 +5,7 @@
 void uniqueWordsInFile(char* filename);
 char* getWord(char* str);
 int strLen(const char* str);
+void copyString(char* str1, char* str2);
 int compareStrings(const char* str1, const char* str2);
 
 int main()
@@ -48,7 +49,7 @@ char* getWord(char* str)
     return wordStart;
 }
 
-int strLen(const char* str)
+int strLen(const char *str)
 {
     int length = 0;
     for (int i = 0; str[i] != '\0'; i++)
@@ -57,6 +58,16 @@ int strLen(const char* str)
     }
 
     return length;
+}
+
+void copyString(char* str1, char* str2)
+{
+    int i;
+    for (i = 0; i < strLen(str2); i++)
+    {
+        str1[i] = str2[i];
+    }
+    str1[i] = '\0';
 }
 
 int compareStrings(const char* str1, const char* str2)
@@ -130,7 +141,8 @@ void uniqueWordsInFile(char* filename)
             }
         }
         */
-        while (fgets(str, 999, file) != NULL)
+        /*
+        while (fgets(str, 499, file) != NULL)
         {
             for (int i = 0; str[i] != '\0'; i++)
             {
@@ -158,6 +170,25 @@ void uniqueWordsInFile(char* filename)
                 }
             }
         }
+        */
+
+        while (fscanf(file, "%s", word) != EOF)
+        {
+            flag = 1;
+            for (int j = 0; j < size; j++)
+                if (compareStrings(arr[j], word) == 0)
+                {
+                    flag = 0;
+                    break;
+                }
+            if (flag)
+            {
+                copyString(arr[size], word);
+                size++;
+            }
+        }
+
+        
         for (int i = 0; i < size; i++)
             printf("%s ", arr[i]);
 
