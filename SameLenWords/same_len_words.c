@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#pragma warning(disable : 4996) 
+
 
 int len(const char* str)
 {
@@ -10,20 +10,24 @@ int len(const char* str)
 }
 
 char* getWord(char* str) {
-    char* word = (char*)malloc(100 * sizeof(char));
-    char* wordStart = word;
+    char* word = (char*)malloc((len(str) + 1) * sizeof(char));
+    int i = 0;
 
-    for (; *str != '\n'; str++) {
-        for (; *str != ' '; str++, word++) {
-            if (*str == '\n') {
-                break;
-            }
-            *word = *str;
+    for (; str[i] != '\n'; i++) 
+    {
+        if (str[i] != ' ')
+            word[i] = str[i];
+        else
+        {
+            word[i] = '\0';
+            str = str + i + 1;
+            return word;
         }
-        *word = '\0';
-        return wordStart;
     }
-    return wordStart;
+
+    word[i] = '\0';
+    str = str - i;
+    return word;
 }
 /*
 int isSameLen(char* str)
@@ -43,7 +47,6 @@ int isSameLen(char* str)
             return 0;
         }
     }
-
     free(temp);
     return 1;
 }
@@ -53,7 +56,7 @@ int stringsWithSameLenWords(const char* fName)
     FILE* fp = NULL;
     char* buff = (char*)malloc(2048 * sizeof(char));
     char* temp = (char*)malloc(100 * sizeof(char));
-    char* start;
+    char* start1, *start2;
     int firstLength, length, flag;
 
     fp = fopen(fName, "r");
@@ -73,18 +76,20 @@ int stringsWithSameLenWords(const char* fName)
                 continue;
             */
 
-            start = buff;
+            start1 = buff;
+            start2 = temp;
             temp = getWord(buff);
             firstLength = len(temp);
             buff = buff + firstLength;
             flag = 1;
 
-            for (int i = 0; buff[i] != '\n'; i++)
+            for (int i = 0; buff[i] != '\0'; i++)
             {
                 while (*buff == ' ') buff++;
                 if (*buff == '\n' || *buff == '\0') break;
 
                 temp = getWord(buff);
+                start2 = temp;
                 length = len(temp);
                 if (length != firstLength)
                 {
@@ -94,12 +99,13 @@ int stringsWithSameLenWords(const char* fName)
                 buff = buff + length;
             }
 
+            buff = start1;
             if (flag)
-                printf("%s", start);
-            buff = start;
+                printf("%s", buff);
         }
+        //temp = start2;
         free(buff);
-        free(temp);
+        //free(temp);
         return 0;
     }
 }
