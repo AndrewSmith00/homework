@@ -75,15 +75,16 @@ void mergeINIfiles(const char *firstFileName, const char *scndFileName)
 
             fPointer2 = fopen(scndFileName, "r");
 
-            while (fgets(str, 99, fPointer2) != NULL)
+          while (fgets(str, 99, fPointer2) != NULL && sectionEnd == 0)
             {
                 str[strLength(str) - 1] = '\0';
-                if (findSubstr(str, checkedSectionNames[k]) != NULL)
+                while (fgets(str, 99, fPointer2) != NULL)
                 {
-                    if (fgets(str, 99, fPointer2) == NULL) break;
-                    str[strLength(str) - 1] = '\0';
-                    if (findSubstr(str, "[") != NULL && findSubstr(str, "]") != NULL) break;
-
+                    if (findSubstr(str, "[") != NULL && findSubstr(str, "]") != NULL)
+                    {
+                        sectionEnd = 1;
+                        break;
+                    }
                     printf("%s\n", str);
                 }
 
