@@ -21,6 +21,23 @@ void strCopy(char* str1, char* str2)
     str1[i] = '\0';
 }
 
+int strcompare(const char* str1, const char* str2)
+{
+    int i = 0;
+    while (str1[i] != '\0' || str2[i] != '\0')
+    {
+        if (str1[i] != str2[i])
+            return 1;
+        if (str1[i] == '\0' && str2[i] != '\0')
+            return 1;
+        if (str1[i] != '\0' && str2[i] == '\0')
+            return 1;
+        i++;
+    }
+
+    return 0;
+}
+
 char* findSubstr(char* str, const char* substr)
 {
     int n, m, j;
@@ -47,7 +64,7 @@ void mergeINIfiles(const char* firstFileName, const char* scndFileName)
     FILE* fPointer2 = NULL;
     char* str; //* sectionName;
     char** checkedSectionNames;
-    int k, sectionEnd;
+    int k, sectionEnd, isChecked;
 
     fPointer1 = fopen(firstFileName, "r");
     //fPointer2 = fopen(scndFileName, "r");
@@ -96,7 +113,42 @@ void mergeINIfiles(const char* firstFileName, const char* scndFileName)
         }
     }
 
-    
+    fPointer2 = fopen(scndFileName, "r");
+    fgets(str, 99, fPointer2);
+
+    while (!feof(fPointer2))
+    {
+        sectionEnd = 0;
+        if (findSubstr(str, "[") != NULL && findSubstr(str, "]") != NULL)
+        {
+            
+            isChecked = 0;
+            for (int i = 0; i < k; i++)
+                if (strcompare(str, checkedSectionNames[i]) == 0)
+                {
+                    isChecked = 1;
+                    break;
+                }
+
+            if (isChecked == 0)
+            {
+                printf("%s", str);
+                while (fgets(str, 99, fPointer2) != NULL)
+                {
+                    if (findSubstr(str, "[") != NULL && findSubstr(str, "]") != NULL)
+                    {
+                        sectionEnd = 1;
+                        break;
+                    }
+                    printf("%s", str);
+                }
+            }
+        }
+        if (sectionEnd == 0)
+            fgets(str, 99, fPointer2);
+    }
+
+    fclose(fPointer2);
 
     for (int i = 0; i < 99; i++)
     {
