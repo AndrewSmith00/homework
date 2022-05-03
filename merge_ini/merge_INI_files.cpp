@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #pragma warning(disable : 4996)
 
@@ -41,13 +41,13 @@ char* findSubstr(char* str, const char* substr)
     return NULL;
 }
 
-void mergeINIfiles(const char *firstFileName, const char *scndFileName)
+void mergeINIfiles(const char* firstFileName, const char* scndFileName)
 {
     FILE* fPointer1 = NULL;
     FILE* fPointer2 = NULL;
     char* str; //* sectionName;
     char** checkedSectionNames;
-    int k;
+    int k, sectionEnd;
 
     fPointer1 = fopen(firstFileName, "r");
     //fPointer2 = fopen(scndFileName, "r");
@@ -55,40 +55,39 @@ void mergeINIfiles(const char *firstFileName, const char *scndFileName)
     checkedSectionNames = (char**)malloc(99 * sizeof(char*));
     k = 0;
 
+
     for (int i = 0; i < 99; i++)
         checkedSectionNames[i] = (char*)malloc(99 * sizeof(char));
 
     while (fgets(str, 99, fPointer1) != NULL)
     {
-        str[strLength(str) - 1] = '\0';
-        printf("%s\n", str);
+        printf("%s", str);
         if (findSubstr(str, "[") != NULL && findSubstr(str, "]") != NULL)
         {
-            strCopy(checkedSectionNames[k], str);
+            sectionEnd = 0;
 
-            while (fgets(str, 99, fPointer1) != NULL)
-            {
-                if(findSubstr(str, "[") != NULL && findSubstr(str, "]") != NULL) break;
-                str[strLength(str) - 1] = '\0';
-                printf("%s\n", str);
-            }
+            strCopy(checkedSectionNames[k], str);
 
             fPointer2 = fopen(scndFileName, "r");
 
-          while (fgets(str, 99, fPointer2) != NULL && sectionEnd == 0)
+            while (fgets(str, 99, fPointer2) != NULL && sectionEnd == 0)
             {
-                str[strLength(str) - 1] = '\0';
-                while (fgets(str, 99, fPointer2) != NULL)
+                if (findSubstr(str, checkedSectionNames[k]) == NULL)
                 {
-                    if (findSubstr(str, "[") != NULL && findSubstr(str, "]") != NULL)
-                    {
-                        sectionEnd = 1;
-                        break;
-                    }
-                    printf("%s\n", str);
+                    continue;
                 }
-
-                    
+                else
+                {
+                    while (fgets(str, 99, fPointer2) != NULL)
+                    {
+                        if (findSubstr(str, "[") != NULL && findSubstr(str, "]") != NULL)
+                        {
+                            sectionEnd = 1;
+                            break;
+                        }
+                        printf("%s", str);
+                    }
+                }
             }
 
             k++;
@@ -96,6 +95,8 @@ void mergeINIfiles(const char *firstFileName, const char *scndFileName)
             fclose(fPointer2);
         }
     }
+
+    
 
     for (int i = 0; i < 99; i++)
     {
