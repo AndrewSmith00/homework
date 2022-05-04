@@ -19,8 +19,6 @@ struct Group
 	int groupNumber, booksNumber, booksValue;
 };
 
-
-int setStudentInfo(char* fileName);
 int getArrayFromFile(char* fileName);
 void sortUprise(Student* arrOfStruct, int n);
 void getGroupsInfo(Student* student, Group* groupInfo, int n);
@@ -39,32 +37,6 @@ int main()
 
 	setStudentInfo(fileName);
 	getArrayFromFile(fileName);
-}
-
-int setStudentInfo(char* fileName)
-{
-	FILE* fPtr = fopen(fileName, "wb");
-	struct Student student;
-	int count;
-
-	if (fPtr == NULL) {
-		printf("Ошибка при создании файла");
-		return -1;
-	}
-	else {
-		printf("Введите количество студентов:\n");
-		scanf("%d", &count);
-
-		printf("Вводите данные о студентах:\n");
-
-		for (int i = 0; i < count; i++)
-		{
-			scanf("%s%s%s%s%d%d%d%d", student.surname, student.name, student.secondname, student.adressStreet, &student.adress, &student.groupNumber, &student.booksNumber, &student.booksValue);
-			fwrite(&student, sizeof(struct Student), 1, fPtr);
-		}
-		fclose(fPtr);
-		return 0;
-	}
 }
 
 int getArrayFromFile(char* fileName)
