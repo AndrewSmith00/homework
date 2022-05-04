@@ -1,7 +1,5 @@
 #include <iostream>
 #include <stdio.h>
-#include <windows.h>
-#pragma warning(disable : 4996) 
 
 using namespace std;
 
@@ -22,21 +20,22 @@ struct Group
 int getArrayFromFile(char* fileName);
 void sortUprise(Student* arrOfStruct, int n);
 void getGroupsInfo(Student* student, Group* groupInfo, int n);
+int printStudentInfo(char* fileName);
 Student getMaxBooksNumber(Student* arrOfStudent, int n);
 Student getMaxBooksValue(Student* arrOfStudent, int n);
 
 int main()
 {
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
-
 	char fileName[30];
 
 	printf("Введите название файла для хранения данных\n");
-	gets_s(fileName);
+	scanf("%s", fileName);
 
-	setStudentInfo(fileName);
+	//printStudentInfo(fileName);
+	//setStudentInfo(fileName);
 	getArrayFromFile(fileName);
+	
+	return 0;
 }
 
 int getArrayFromFile(char* fileName)
@@ -53,7 +52,7 @@ int getArrayFromFile(char* fileName)
 		return -1;
 	}
 	else {
-		while (fread(&arrOfStudents[count], sizeof(struct Student), 1, fPtr) != NULL)
+		while (fread(&arrOfStudents[count], sizeof(struct Student), 1, fPtr) != 0)
 		{
 			count++;
 			fseek(fPtr, count * sizeof(struct Student), 0);
@@ -76,6 +75,26 @@ int getArrayFromFile(char* fileName)
 		printf("Студент с максимальной стоимостью книг:\n");
 		printf("%s %s %s %s %d %d %d %d\n", maxBooksValue.surname, maxBooksValue.name, maxBooksValue.secondname, maxBooksValue.adressStreet, maxBooksValue.adress, maxBooksValue.groupNumber, maxBooksValue.booksNumber, maxBooksValue.booksValue);
 
+		return 0;
+	}
+}
+
+int printStudentInfo(char* fileName)
+{
+	FILE* fPtr = fopen(fileName, "rb");
+	Student student;
+	
+	if(!fPtr)
+	{
+		printf("File has not been opened");
+		return -1;
+	}
+	else
+	{
+		while (fread(&student, sizeof(struct Student), 1, fPtr) != 0)
+			printf("%d %s %s %s %s %d %d %d\n", student.groupNumber, student.surname, student.name, student.secondname, student.adressStreet, student.adress, student.booksNumber, student.booksValue);
+		
+		fclose(fPtr);
 		return 0;
 	}
 }
