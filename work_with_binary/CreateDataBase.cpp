@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <stdio.h>
 #include <windows.h>
 #pragma warning(disable : 4996) 
@@ -41,12 +41,12 @@ int setStudentInfo(char* filename)
 	else {
 		printf("Вводите данные о студентах. Для завершения введите 0 - - - - 0 0 0\n");
 		printf("№ группы | Фамилия | Имя | Отчество | Улица | Дом | Количество книг | Стоимость книг\n");
-		scanf("%d%s%s%s%s%d%d%d", &student.groupNumber, student.surname, student.name, student.secondname, student.adressStreet, &student.adress, &student.booksNumber, &student.booksValue);
+		scanf("%d%s%s%s%s%d%d%d", &student.groupNumber, student.name, student.surname, student.secondname, student.adressStreet, &student.adress, &student.booksNumber, &student.booksValue);
 
 		while (strcmp(student.surname, "-") != 0)
 		{
 			fwrite(&student, sizeof(struct Student), 1, fPtr);
-			scanf("%d%s%s%s%s%d%d%d", &student.groupNumber, student.surname, student.name, student.secondname, student.adressStreet, &student.adress, &student.booksNumber, &student.booksValue);
+			scanf("%d%s%s%s%s%d%d%d", &student.groupNumber, student.name, student.surname, student.secondname, student.adressStreet, &student.adress, &student.booksNumber, &student.booksValue);
 		}
 
 		fclose(fPtr);
