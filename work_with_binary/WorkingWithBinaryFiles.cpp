@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
@@ -50,7 +50,7 @@ Student getMaxBooksNumber(Student* arrOfStudent, int n);
 Student getMaxBooksValue(Student* arrOfStudent, int n);
 
 int getMenuPointer();
-void setDataToFile(FILE* fPtr, int amount);
+int setDataToFile(FILE* fPtr, int amount);
 int removeByNumber(char* filename);
 int removeByData(char* filename);
 int getStudentInfo(char* filename, Student* arrOfStudents, long& count);
@@ -75,8 +75,7 @@ int openFile(char* filename)
 	int errorCode;
 
 	printf("Введите название файла:\n");
-	errorCode = scanf("%s", filename);
-	if (errorCode != 1)
+	if (scanf("%s", filename) != 1)
 	{
 		printf("Ошибка: неправильно введено название файла\n");
 		return -2;
@@ -113,18 +112,18 @@ int insertAtStart(char* filename)
 	}
 
 	printf("Введите количество записей:\n");
+
 	errorCode = scanf("%d", &amount);
-	while (errorCode != 1)
+
+	if (errorCode != 1)
 	{
 		printf("Ошибка: неверно указано количество записей\n");
-
-		printf("Введите количество записей:\n");
-		errorCode = scanf("%d", &amount);
+		return -2;
 	}
 
 	setDataToFile(fPtr2, amount);
 
-	while(fread(&student, studenSize, 1, fPtr1))
+	while(fread(&student, studenSize, 1, fPtr1) != NULL)
 		fwrite(&student, studenSize, 1, fPtr2);
 
 	fclose(fPtr1); fclose(fPtr2);
@@ -152,33 +151,31 @@ int insertAtMiddle(char* filename)
 
 	printf("Введите позицию, в которую необходимо записать данные\n");
 	errorCode = scanf("%d", &pos);
-	while (errorCode != 1)
+
+	if (errorCode != 1)
 	{
 		printf("Ошибка: неверно указана позиция\n");
-
-		printf("Введите позицию, в которую необходимо записать данные");
-		errorCode = scanf("%d", &pos);
+		return -2;
 	}
 
 	printf("Введите количество записей:\n");
 	errorCode = scanf("%d", &amount);
-	while (errorCode != 1)
+
+	if (errorCode != 1)
 	{
 		printf("Ошибка: неверно указано количество записей\n");
-
-		printf("Введите количество записей:\n");
-		errorCode = scanf("%d", &amount);
+		return -2;
 	}
 
 	for (int i = 0; i < pos - 1; i++)
 	{
-		if (fread(&student, studenSize, 1, fPtr1)) break;
+		if (fread(&student, studenSize, 1, fPtr1) == NULL) break;
 		fwrite(&student, studenSize, 1, fPtr2);
 	}
 
 	setDataToFile(fPtr2, amount);
 
-	while (fread(&student, studenSize, 1, fPtr1))
+	while (fread(&student, studenSize, 1, fPtr1) != NULL)
 		fwrite(&student, studenSize, 1, fPtr2);
 
 	fclose(fPtr1); fclose(fPtr2);
@@ -206,15 +203,14 @@ int insertAtEnd(char* filename)
 
 	printf("Введите количество записей:\n");
 	errorCode = scanf("%d", &amount);
-	while (errorCode != 1)
+
+	if (errorCode != 1)
 	{
 		printf("Ошибка: неверно указано количество записей\n");
-
-		printf("Введите количество записей:\n");
-		errorCode = scanf("%d", &amount);
+		return -2;
 	}
 
-	while (fread(&student, studenSize, 1, fPtr1))
+	while (fread(&student, studenSize, 1, fPtr1) != NULL)
 		fwrite(&student, studenSize, 1, fPtr2);
 
 	setDataToFile(fPtr2, amount);
@@ -231,14 +227,15 @@ int removeData(char* filename)
 
 	printf("Выберите действие:\n");
 	printf("1. Удалить данные по номеру записи.\n");
-	printf("1. Удалить данные по содержимому записи.\n");
+	printf("2. Удалить данные по содержимому записи.\n");
+
 
 	errorCode = scanf("%d", &removeType);
 
-	while (errorCode != 1)
+	if (errorCode != 1)
 	{
-		printf("Ошибка: некорректно выбран тип удаления. Попробуйте снова\n");
-		errorCode = scanf("%d", &removeType);
+		printf("Ошибка: некорректно выбран тип удаления\n");
+		return -2;
 	}
 
 	switch (removeType)
@@ -252,7 +249,7 @@ int removeData(char* filename)
 		break;
 
 	default:
-		printf("Ошибка: некорректно выбран тип удаления. Попробуйте снова\n");
+		printf("Ошибка: некорректно выбран тип удаления\n");
 		break;
 	}
 	
@@ -278,35 +275,32 @@ int changeData(char* filename)
 
 	printf("Введите позицию, в которой необходимо исправить данные\n");
 	errorCode = scanf("%d", &pos);
-	while (errorCode != 1)
+
+	if (errorCode != 1)
 	{
 		printf("Ошибка: неверно указана позиция\n");
-
-		printf("Введите позицию, в которой необходимо исправить данные\n");
-		errorCode = scanf("%d", &pos);
+		return -2;
 	}
 
 	for (int i = 0; i < pos; i++)
 	{
-		if (fread(&student, studenSize, 1, fPtr1)) break;
+		if (fread(&student, studenSize, 1, fPtr1) == NULL) break;
 		fwrite(&student, studenSize, 1, fPtr2);
 	}
 
 	printf("Введите данные, которые необходимо записать на место имправленных\n");
 	printf("№ группы | Фамилия | Имя | Отчество | Улица | Дом | Количество книг | Стоимость книг\n");
 	errorCode = scanf("%d%s%s%s%s%d%d%d", &student.groupNumber, student.surname, student.name, student.secondname, student.adressStreet, &student.adress, &student.booksNumber, &student.booksValue);
-	while (errorCode != 8)
+
+	if(errorCode != 8)
 	{
 		printf("Ошибка: неверно введены данные о студенте\n");
-
-		printf("Введите данные, которые необходимо записать на место имправленных\n");
-		printf("№ группы | Фамилия | Имя | Отчество | Улица | Дом | Количество книг | Стоимость книг\n");
-		errorCode = scanf("%d%s%s%s%s%d%d%d", &student.groupNumber, student.surname, student.name, student.secondname, student.adressStreet, &student.adress, &student.booksNumber, &student.booksValue);
+		return -2;
 	}
 
 	fwrite(&student, studenSize, 1, fPtr2);
 
-	while (fread(&student, studenSize, 1, fPtr1))
+	while (fread(&student, studenSize, 1, fPtr1) != NULL)
 		fwrite(&student, studenSize, 1, fPtr2);
 
 	fclose(fPtr1); fclose(fPtr2);
@@ -361,8 +355,8 @@ int printFile(char* fileName)
 	FILE* fPtr = fopen(fileName, "rb");
 	Student student;
 
-	sortByName(fileName);
-	sortByGroups(fileName);
+	//sortByName(fileName);
+	//sortByGroups(fileName);
 
 	if (!fPtr)
 	{
@@ -427,7 +421,7 @@ void getGroupsInfo(Student* student, Group* groupInfo, int n)
 
 
 
-void setDataToFile(FILE* fPtr, int amount)
+int setDataToFile(FILE* fPtr, int amount)
 {
 	Student student;
 	int errorCode;
@@ -437,17 +431,16 @@ void setDataToFile(FILE* fPtr, int amount)
 	for (int i = 0; i < amount; i++)
 	{
 		errorCode = scanf("%d%s%s%s%s%d%d%d", &student.groupNumber, student.surname, student.name, student.secondname, student.adressStreet, &student.adress, &student.booksNumber, &student.booksValue);
-		while (errorCode != 8)
+
+		if (errorCode != 8)
 		{
 			printf("Ошибка: неверно введены данные о студенте\n");
-
-			printf("Вводите данные о студентах\n");
-			printf("№ группы | Фамилия | Имя | Отчество | Улица | Дом | Количество книг | Стоимость книг\n");
-			errorCode = scanf("%d%s%s%s%s%d%d%d", &student.groupNumber, student.surname, student.name, student.secondname, student.adressStreet, &student.adress, &student.booksNumber, &student.booksValue);
+			return -2;
 		}
 
 		fwrite(&student, studenSize, 1, fPtr);
 	}
+	return 0;
 }
 
 int removeByNumber(char* filename)
@@ -469,33 +462,31 @@ int removeByNumber(char* filename)
 
 	printf("Введите позицию, с которой необходимо начать удаление\n");
 	errorCode = scanf("%d", &pos);
-	while (errorCode != 1)
+
+	if (errorCode != 1)
 	{
 		printf("Ошибка: неверно указана позиция\n");
-
-		printf("Введите позицию, с которой необходимо начать удаление\n");
-		errorCode = scanf("%d", &pos);
+		return -2;
 	}
 
 	printf("Введите количество записей:\n");
 	errorCode = scanf("%d", &amount);
-	while (errorCode != 1)
+
+	if (errorCode != 1)
 	{
 		printf("Ошибка: неверно указано количество записей\n");
-
-		printf("Введите количество записей:\n");
-		errorCode = scanf("%d", &amount);
+		return -2;
 	}
 
 	for (int i = 0; i < pos - 1; i++)
 	{
-		if (fread(&student, studenSize, 1, fPtr1)) break;
+		if (fread(&student, studenSize, 1, fPtr1) == NULL) break;
 		fwrite(&student, studenSize, 1, fPtr2);
 	}
 
 	fseek(fPtr1, studenSize * amount, SEEK_CUR);
 
-	while (fread(&student, studenSize, 1, fPtr1))
+	while (fread(&student, studenSize, 1, fPtr1) != NULL)
 		fwrite(&student, studenSize, 1, fPtr2);
 
 	fclose(fPtr1); fclose(fPtr2);
@@ -510,7 +501,7 @@ int removeByData(char* filename)
 	FILE* fPtr1 = NULL;
 	FILE* fPtr2 = NULL;
 	char fullName[99] = "", adress[3] = "", fullAdress[99] = "", strData[99] = "";
-	int amount, dataType, errorCode, intData;;
+	int amount, dataType, errorCode, intData, c;
 
 	fPtr1 = fopen(filename, "rb");
 	fPtr2 = fopen("temp.bin", "wb");
@@ -530,22 +521,21 @@ int removeByData(char* filename)
 	printf("5. Стоимость книг\n");
 
 	errorCode = scanf("%d", &dataType);
-	while (errorCode != 1)
-	{
-		printf("Ошибка: неверно указана позиция\n");
 
-		printf("Введите позицию, с которой необходимо начать удаление\n");
-		errorCode = scanf("%d", &dataType);
+	if (errorCode != 1)
+	{
+		printf("Ошибка: неверно указан критерий\n");
+		return -2;
 	}
 
 	printf("Введите количество записей:\n");
+	
 	errorCode = scanf("%d", &amount);
-	while (errorCode != 1)
+
+	if (errorCode != 1)
 	{
 		printf("Ошибка: неверно указано количество записей\n");
-
-		printf("Введите количество записей:\n");
-		errorCode = scanf("%d", &amount);
+		return -2;
 	}
 	
 	switch (dataType)
@@ -553,15 +543,13 @@ int removeByData(char* filename)
 	case 1:
 		printf("Введите номеру группы:\n");
 		errorCode = scanf("%d", &intData);
-		while (errorCode != 1)
+		if (errorCode != 1)
 		{
 			printf("Ошибка: неверно выбран номер группы\n");
-
-			printf("Введите номеру группы:\n");
-			errorCode = scanf("%d", &intData);
+			return -2;
 		}
 
-		while (fread(&student, studenSize, 1, fPtr1))
+		while (fread(&student, studenSize, 1, fPtr1) != NULL)
 		{
 			if (student.groupNumber == intData) break;
 			fwrite(&student, studenSize, 1, fPtr2);
@@ -569,7 +557,7 @@ int removeByData(char* filename)
 
 		fseek(fPtr1, studenSize * amount, SEEK_CUR);
 
-		while (fread(&student, studenSize, 1, fPtr1))
+		while (fread(&student, studenSize, 1, fPtr1) != NULL)
 			fwrite(&student, studenSize, 1, fPtr2);
 
 		fclose(fPtr1); fclose(fPtr2);
@@ -579,22 +567,27 @@ int removeByData(char* filename)
 
 	case 2:
 		printf("Введите ФИО студента:\n");
+		while ((c = getchar()) != '\n' && c != EOF) {}
 		fgets(strData, 98, stdin);
 
-		while (fread(&student, studenSize, 1, fPtr1))
+		while (fread(&student, studenSize, 1, fPtr1) != NULL)
 		{
-			strcat(fullAdress, student.adressStreet);
-			strcat(fullAdress, " ");
-			sprintf(adress, "%d", student.adress);
-			strcat(fullAdress, adress);
+			strcat(fullName, student.surname);
+			strcat(fullName, " ");
+			strcat(fullName, student.name);
+			strcat(fullName, " ");
+			strcat(fullName, student.secondname);
+			strcat(fullName, "\n");
 
 			if (strcmp(fullName, strData) == 0) break;
 			fwrite(&student, studenSize, 1, fPtr2);
+
+			fullName[0] = '\0';
 		}
 
-		fseek(fPtr1, studenSize * amount, SEEK_CUR);
+		fseek(fPtr1, studenSize * (amount - 1), SEEK_CUR);
 
-		while (fread(&student, studenSize, 1, fPtr1))
+		while (fread(&student, studenSize, 1, fPtr1) != NULL)
 			fwrite(&student, studenSize, 1, fPtr2);
 
 		fclose(fPtr1); fclose(fPtr2);
@@ -604,23 +597,23 @@ int removeByData(char* filename)
 
 	case 3:
 		printf("Введите адрес проживания студента:\n");
+		fflush(stdin);
 		fgets(strData, 98, stdin);
 
-		while (fread(&student, studenSize, 1, fPtr1))
+		while (fread(&student, studenSize, 1, fPtr1) != NULL)
 		{
-			strcat(fullName, student.surname);
-			strcat(fullName, " ");
-			strcat(fullName, student.name);
-			strcat(fullName, " ");
-			strcat(fullName, student.secondname);
+			strcat(fullAdress, student.adressStreet);
+			strcat(fullAdress, " ");
+			sprintf(adress, "%d", student.adress);
+			strcat(fullAdress, adress);
 
 			if (strcmp(fullAdress, strData) == 0) break;
 			fwrite(&student, studenSize, 1, fPtr2);
 		}
 
-		fseek(fPtr1, studenSize * amount, SEEK_CUR);
+		//fseek(fPtr1, studenSize * amount, SEEK_CUR);
 
-		while (fread(&student, studenSize, 1, fPtr1))
+		while (fread(&student, studenSize, 1, fPtr1) != NULL)
 			fwrite(&student, studenSize, 1, fPtr2);
 
 		fclose(fPtr1); fclose(fPtr2);
@@ -631,15 +624,14 @@ int removeByData(char* filename)
 	case 4:
 		printf("Введите количество книг:\n");
 		errorCode = scanf("%d", &intData);
-		while (errorCode != 1)
+
+		if (errorCode != 1)
 		{
 			printf("Ошибка: неверно введено количество книг\n");
-
-			printf("Введите количество книг:\n");
-			errorCode = scanf("%d", &intData);
+			return -2;
 		}
 
-		while (fread(&student, studenSize, 1, fPtr1))
+		while (fread(&student, studenSize, 1, fPtr1) != NULL)
 		{
 			if (student.booksNumber == intData) break;
 			fwrite(&student, studenSize, 1, fPtr2);
@@ -647,7 +639,7 @@ int removeByData(char* filename)
 
 		fseek(fPtr1, studenSize * amount, SEEK_CUR);
 
-		while (fread(&student, studenSize, 1, fPtr1))
+		while (fread(&student, studenSize, 1, fPtr1) != NULL)
 			fwrite(&student, studenSize, 1, fPtr2);
 
 		fclose(fPtr1); fclose(fPtr2);
@@ -658,15 +650,14 @@ int removeByData(char* filename)
 	case 5:
 		printf("Введите стоимость книг:\n");
 		errorCode = scanf("%d", &intData);
-		while (errorCode != 1)
+
+		if (errorCode != 1)
 		{
 			printf("Ошибка: неверно введена стоимость книг\n");
-
-			printf("Введите стоимость книг:\n");
-			errorCode = scanf("%d", &intData);
+			return -2;
 		}
 
-		while (fread(&student, studenSize, 1, fPtr1))
+		while (fread(&student, studenSize, 1, fPtr1) != NULL)
 		{
 			if (student.booksValue == intData) break;
 			fwrite(&student, studenSize, 1, fPtr2);
@@ -674,7 +665,7 @@ int removeByData(char* filename)
 
 		fseek(fPtr1, studenSize * amount, SEEK_CUR);
 
-		while (fread(&student, studenSize, 1, fPtr1))
+		while (fread(&student, studenSize, 1, fPtr1) != NULL)
 			fwrite(&student, studenSize, 1, fPtr2);
 
 		fclose(fPtr1); fclose(fPtr2);
@@ -707,10 +698,10 @@ int getMenuPointer()
 
 	errorCode = scanf("%d", &menuPointer);
 
-	while (errorCode != 1)
+	if (errorCode != 1)
 	{
-		printf("Ошибка: некорректно введён пункт меню. Попробуйте снова\n");
-		errorCode = scanf("%d", &menuPointer);
+		printf("Ошибка: некорректно введён пункт меню\n");
+		return -2;
 	}
 
 	return menuPointer;
@@ -884,7 +875,9 @@ void menu()
 			break;
 
 		default:
-			printf("Ошибка: некорректно выбран пункт меню. Попробуйте снова\n");
+			system("cls");
+			printf("Ошибка: некорректно выбран пункт меню.\n");
+			menuPointer = getMenuPointer();
 			break;
 		}
 	}
