@@ -12,7 +12,7 @@ using namespace std;
 Файл содержит информацию о студентах-задолженниках книг в библиотеке в виде:
 	Номер группы | ФИО | Место жительства | Количество несданных книг | Стоимоть несданных книг
 Задача:
-a) Опрелить студента, не сдавшего наибольшее количество книг, и студента, обладающего 
+a) Опрелить студента, не сдавшего наибольшее количество книг, и студента, обладающего
 книгами максимальной стоимости
 б) Выдать информацию по группам в виде:
 	Номер группы | Количество книг, подлежащих возврату | Общая стоимость этих книг
@@ -21,16 +21,16 @@ a) Опрелить студента, не сдавшего наибольшее
 
 struct Student
 {
-    char name[30];
-    char surname[30];
-    char secondname[30];
-    char adressStreet[30];
-    int adress, groupNumber, booksNumber, booksValue;
+	char name[30];
+	char surname[30];
+	char secondname[30];
+	char adressStreet[30];
+	int adress, groupNumber, booksNumber, booksValue;
 };
 
 struct Group
 {
-    int groupNumber, booksNumber, booksValue;
+	int groupNumber, booksNumber, booksValue;
 };
 
 int studenSize = sizeof(struct Student);
@@ -61,8 +61,8 @@ void menu();
 
 int main()
 {
-    SetConsoleCP(1251); 
-    SetConsoleOutputCP(1251);
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 
 	menu();
 
@@ -123,7 +123,7 @@ int insertAtStart(char* filename)
 
 	setDataToFile(fPtr2, amount);
 
-	while(fread(&student, studenSize, 1, fPtr1) != NULL)
+	while (fread(&student, studenSize, 1, fPtr1) != NULL)
 		fwrite(&student, studenSize, 1, fPtr2);
 
 	fclose(fPtr1); fclose(fPtr2);
@@ -252,7 +252,7 @@ int removeData(char* filename)
 		printf("Ошибка: некорректно выбран тип удаления\n");
 		break;
 	}
-	
+
 	return 0;
 }
 
@@ -292,7 +292,7 @@ int changeData(char* filename)
 	printf("№ группы | Фамилия | Имя | Отчество | Улица | Дом | Количество книг | Стоимость книг\n");
 	errorCode = scanf("%d%s%s%s%s%d%d%d", &student.groupNumber, student.surname, student.name, student.secondname, student.adressStreet, &student.adress, &student.booksNumber, &student.booksValue);
 
-	if(errorCode != 8)
+	if (errorCode != 8)
 	{
 		printf("Ошибка: неверно введены данные о студенте\n");
 		return -2;
@@ -335,16 +335,16 @@ int getInfoFromFile(char* fileName)
 		for (int i = 0; i < 11; i++)
 		{
 			if (groupsInfo[i].groupNumber > 0)
-				printf("%d %d %d\n", groupsInfo[i].groupNumber, groupsInfo[i].booksNumber, groupsInfo[i].booksValue);
+				printf("%6d %15d %15d\n", groupsInfo[i].groupNumber, groupsInfo[i].booksNumber, groupsInfo[i].booksValue);
 		}
 
 		maxBooksNumber = getMaxBooksNumber(arrOfStudents, count);
 		maxBooksValue = getMaxBooksValue(arrOfStudents, count);
 
 		printf("Студент с максимальным количеством книг:\n");
-		printf("%s %s %s %s %d %d %d %d\n", maxBooksNumber.surname, maxBooksNumber.name, maxBooksNumber.secondname, maxBooksNumber.adressStreet, maxBooksNumber.adress, maxBooksNumber.groupNumber, maxBooksNumber.booksNumber, maxBooksNumber.booksValue);
+		printf("%2d %-10s %-10s %-10s %-10s %3d %2d %5d\n", maxBooksNumber.groupNumber, maxBooksNumber.surname, maxBooksNumber.name, maxBooksNumber.secondname, maxBooksNumber.adressStreet, maxBooksNumber.adress, maxBooksNumber.booksNumber, maxBooksNumber.booksValue);
 		printf("Студент с максимальной стоимостью книг:\n");
-		printf("%s %s %s %s %d %d %d %d\n", maxBooksValue.surname, maxBooksValue.name, maxBooksValue.secondname, maxBooksValue.adressStreet, maxBooksValue.adress, maxBooksValue.groupNumber, maxBooksValue.booksNumber, maxBooksValue.booksValue);
+		printf("%2d %-10s %-10s %-10s %-10s %3d %2d %5d\n", maxBooksNumber.groupNumber, maxBooksNumber.surname, maxBooksNumber.name, maxBooksNumber.secondname, maxBooksNumber.adressStreet, maxBooksNumber.adress, maxBooksNumber.booksNumber, maxBooksNumber.booksValue);
 
 		return 0;
 	}
@@ -366,7 +366,7 @@ int printFile(char* fileName)
 	else
 	{
 		while (fread(&student, sizeof(struct Student), 1, fPtr) != 0)
-			printf("%d %s %s %s %s %d %d %d\n", student.groupNumber, student.surname, student.name, student.secondname, student.adressStreet, student.adress, student.booksNumber, student.booksValue);
+			printf("%2d %-20s %-20s %-20s %-20s %3d %2d %5d\n", student.groupNumber, student.surname, student.name, student.secondname, student.adressStreet, student.adress, student.booksNumber, student.booksValue);
 
 		fclose(fPtr);
 		return 0;
@@ -529,7 +529,7 @@ int removeByData(char* filename)
 	}
 
 	printf("Введите количество записей:\n");
-	
+
 	errorCode = scanf("%d", &amount);
 
 	if (errorCode != 1)
@@ -537,7 +537,7 @@ int removeByData(char* filename)
 		printf("Ошибка: неверно указано количество записей\n");
 		return -2;
 	}
-	
+
 	switch (dataType)
 	{
 	case 1:
@@ -620,7 +620,7 @@ int removeByData(char* filename)
 		remove(filename);
 		rename("temp.bin", filename);
 		break;
-	
+
 	case 4:
 		printf("Введите количество книг:\n");
 		errorCode = scanf("%d", &intData);
@@ -646,7 +646,7 @@ int removeByData(char* filename)
 		remove(filename);
 		rename("temp.bin", filename);
 		break;
-	
+
 	case 5:
 		printf("Введите стоимость книг:\n");
 		errorCode = scanf("%d", &intData);
@@ -672,7 +672,7 @@ int removeByData(char* filename)
 		remove(filename);
 		rename("temp.bin", filename);
 		break;
-	
+
 	default:
 		printf("Выбран неизвестный тип данных\n");
 		break;
