@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
@@ -11,10 +11,18 @@ struct Node
 	Node* right;
 };
 
+struct stackNode
+{
+	Node* info;
+	stackNode* next;
+};
+
 Node* newNode(int num);
 void AddTree(Node* root, int num);
 void FindTree(Node* root, int num, Node*& ad, Node*& adr);
 Node* DeleteTree(Node* root, int num);
+Node* DeleteTreeP(Node* root, int num, char p);
+void ViewTree1(Node* root);
 
 int main()
 {
@@ -88,65 +96,65 @@ void FindTree(Node* root, int num, Node*& ad, Node*& adr)
 
 Node* DeleteTree(Node* root, int num)
 {
-	Node* leaf = NULL, * parent = NULL, * temp;
-	FindTree(root, num, leaf, parent);
+	Node* cur = NULL, * parent = NULL, * temp;
+	FindTree(root, num, cur, parent);
 
 	while (true)
 	{
-		if (leaf == NULL) return root;
+		if (cur == NULL) return root;
 		if (parent == NULL)
 		{
-			if (leaf->left == NULL && leaf->right == NULL)
+			if (cur->left == NULL && cur->right == NULL)
 			{
-				delete leaf;
+				delete cur;
 				return NULL;
 			}
-			else if (leaf->left == NULL)
+			else if (cur->left == NULL)
 			{
-				temp = leaf->right;
-				delete(leaf);
+				temp = cur->right;
+				delete(cur);
 				return temp;
 			}
-			else if (leaf->right == NULL)
+			else if (cur->right == NULL)
 			{
-				temp = leaf->left;
-				delete(leaf);
+				temp = cur->left;
+				delete(cur);
 				return temp;
 			}
 		}
-		if (leaf->left == NULL && leaf->right == NULL)
+		if (cur->left == NULL && cur->right == NULL)
 		{
-			if (parent->left == leaf) parent->left = NULL;
+			if (parent->left == cur) parent->left = NULL;
 			else parent->right = NULL;
-			delete leaf;
+			delete cur;
 			return root;
 		}
-		else if (leaf->left == NULL)
+		else if (cur->left == NULL)
 		{
-			if (parent->left == leaf) parent->left = leaf->right;
-			else parent->right = leaf->right;
-			delete leaf;
+			if (parent->left == cur) parent->left = cur->right;
+			else parent->right = cur->right;
+			delete cur;
 			return root;
 		}
-		else if (leaf->left == NULL)
+		else if (cur->left == NULL)
 		{
-			if (parent->left == leaf) parent->left = leaf->left;
-			else parent->right = leaf->left;
-			delete leaf;
+			if (parent->left == cur) parent->left = cur->left;
+			else parent->right = cur->left;
+			delete cur;
 			return root;
 		}
 		else
 		{
-			temp = leaf;
-			parent = leaf;
-			leaf = leaf->right;
+			temp = cur;
+			parent = cur;
+			cur = cur->right;
 
-			while (leaf->left != NULL)
+			while (cur->left != NULL)
 			{
-				parent = leaf;
-				leaf = leaf->left;
+				parent = cur;
+				cur= cur->left;
 			}
-			temp->data = leaf->data;
+			temp->data = cur->data;
 			delete temp;
 		}
 	}
@@ -156,5 +164,54 @@ Node* DeleteTree(Node* root, int num)
 
 Node* DeleteTreeP(Node* root, int num, char p)
 {
-	Node* leaf = NULL, * parent = NULL, *temp
+	Node* cur = NULL, * parent = NULL, * temp, * tempParent;
+	bool flag;
+
+	FindTree(root, num, cur, parent);
+
+	if (cur == NULL)
+		return root;
+	flag = (p == 'L');
+	parent = cur;
+	if (flag)
+		cur = cur->left;
+	else
+		cur = cur->right;
+
+	tempParent = parent;
+	temp = cur;
+
+	while ((flag && tempParent->left != NULL) || (!flag and tempParent->right != NULL))
+	{
+		parent = tempParent;
+		cur = temp;
+
+		while (cur->left != NULL || cur->right != NULL)
+		{
+			while (cur->left != NULL)
+			{
+				parent = cur;
+				cur = cur->left;
+			}
+			while (cur->right != NULL)
+			{
+				parent = cur;
+				cur = cur->right;
+			}
+		}
+
+		if (parent->left == cur) cur->left = NULL;
+		else parent->right = NULL;
+		delete (cur);
+	}
+
+	return root;
+}
+
+void ViewTree1(Node* root)
+{
+	if (root == NULL) return;
+
+	Node* cur = NULL;
+
 }
